@@ -1,0 +1,55 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="header1">
+        <item name="android:gravity">left</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textSize">@dimen/largeTxtSize</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/Black</item>
+    </style>
+
+    <style name="Button" parent="Widget.AppCompat.Button">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:textSize">@dimen/smallTxtSize</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/Black</item>
+    </style>
+
+    <style name="email_button" parent="@style/Button">
+        <item name="android:background">@drawable/login_with_email_button</item>
+
+
+    </style>
+
+    <style name="facebook_login_button" parent="@style/Button">
+        <item name="android:background">@drawable/facebook_login_button</item>
+        <item name="android:textColor">@color/White</item>
+
+    </style>
+
+
+    <style name="create_an_account_button" parent="@style/Button">
+        <item name="android:background">@drawable/create_an_account_button</item>
+        <item name="android:textColor">@color/Black</item>
+    </style>
+
+    <style name="more_ways_to_login_button" parent="Widget.AppCompat.Button">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/Black</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+    </style>
+
+</resources>
