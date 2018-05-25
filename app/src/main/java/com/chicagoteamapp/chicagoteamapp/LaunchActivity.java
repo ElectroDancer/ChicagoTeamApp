@@ -21,10 +21,10 @@ public class LaunchActivity extends AppCompatActivity {
     }
 
     private void initUI() {
-        welcome = findViewById(R.id.welcome);
-        createAnAccount = findViewById(R.id.create_an_account);
-        loginWithEmail = findViewById(R.id.login_with_email);
-        facebook = findViewById(R.id.facebook);
-        moreWaysToLogin = findViewById(R.id.more_ways_to_login);
+        welcome = findViewById(R.id.text_welcome);
+        createAnAccount = findViewById(R.id.button_create_an_account);
+        loginWithEmail = findViewById(R.id.button_login_with_email);
+        facebook = findViewById(R.id.button_facebook);
+        moreWaysToLogin = findViewById(R.id.button_more_ways_to_login);
     }
 }
