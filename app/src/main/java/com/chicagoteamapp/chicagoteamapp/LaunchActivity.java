@@ -7,11 +7,11 @@ import android.widget.TextView;
 
 public class LaunchActivity extends AppCompatActivity {
 
-    private TextView welcome;
-    private Button createAnAccount;
-    private Button loginWithEmail;
-    private Button facebook;
-    private Button moreWaysToLogin;
+    private TextView mWelcome;
+    private Button mCreateAnAccount;
+    private Button mLoginWithEmail;
+    private Button mFacebook;
+    private Button mMoreWaysToLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,10 +21,10 @@ public class LaunchActivity extends AppCompatActivity {
     }
 
     private void initUI() {
-        welcome = findViewById(R.id.text_welcome);
-        createAnAccount = findViewById(R.id.button_create_an_account);
-        loginWithEmail = findViewById(R.id.button_login_with_email);
-        facebook = findViewById(R.id.button_facebook);
-        moreWaysToLogin = findViewById(R.id.button_more_ways_to_login);
+        mWelcome = findViewById(R.id.text_welcome);
+        mCreateAnAccount = findViewById(R.id.button_create_an_account);
+        mLoginWithEmail = findViewById(R.id.button_login_with_email);
+        mFacebook = findViewById(R.id.button_facebook);
+        mMoreWaysToLogin = findViewById(R.id.button_more_ways_to_login);
     }
 }
