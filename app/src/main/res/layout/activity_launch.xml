@@ -5,17 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/White"
     tools:context="com.chicagoteamapp.chicagoteamapp.LaunchActivity">
 
     <TextView
         android:id="@+id/welcome"
         style="@style/header1"
-        android:text="@string/welcome_nlet_s_reach_the_goal"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="48dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:text="@string/welcome_nlet_s_reach_the_goal"
         app:layout_constraintBottom_toTopOf="@+id/create_an_account"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.112"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="InvalidId" />
 
@@ -23,9 +25,6 @@
         android:id="@+id/create_an_account"
         android:text="@string/create_an_account"
         style="@style/create_an_account_button"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
         app:layout_constraintBottom_toTopOf="@+id/login_with_email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -34,10 +33,7 @@
         android:id="@+id/login_with_email"
         android:text="@string/login_with_email"
         style="@style/email_button"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/facebook"
+         app:layout_constraintBottom_toTopOf="@+id/facebook"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         />
@@ -46,13 +42,11 @@
         android:id="@+id/facebook"
         android:text="@string/facebook"
         style="@style/facebook_login_button"
-        android:background="@drawable/facebook_image"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
         app:layout_constraintBottom_toTopOf="@+id/more_ways_to_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:drawableStart = "@drawable/facebook"
+        android:drawablePadding="-30dp"
         />
 
     <Button
