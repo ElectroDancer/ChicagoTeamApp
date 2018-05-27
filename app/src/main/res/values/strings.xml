@@ -5,4 +5,6 @@
     <string name="action_facebook">Facebook</string>
     <string name="action_login_with_email">Login with Email</string>
     <string name="title_welcome">Welcome.\nLet\'s reach the goal.</string>
+    <string name="action_add_task">Add task</string>
+    <string name="action_show_lists">Show lists</string>
 </resources>
