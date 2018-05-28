@@ -1,4 +1,4 @@
-package com.chicagoteamapp.chicagoteamapp.Util;
+package com.chicagoteamapp.chicagoteamapp.util;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;

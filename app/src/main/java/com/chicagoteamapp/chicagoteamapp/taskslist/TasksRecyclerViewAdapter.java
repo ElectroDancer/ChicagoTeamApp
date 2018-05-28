@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.chicagoteamapp.chicagoteamapp.R;
 import com.chicagoteamapp.chicagoteamapp.Task;
-import com.chicagoteamapp.chicagoteamapp.Util.DateUtil;
+import com.chicagoteamapp.chicagoteamapp.util.DateUtil;
 
 import java.util.List;
 
