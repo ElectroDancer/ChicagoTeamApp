@@ -1,78 +1,100 @@
 package com.chicagoteamapp.chicagoteamapp.taskslist;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.chicagoteamapp.chicagoteamapp.R;
-import com.chicagoteamapp.chicagoteamapp.taskslist.TasksFragment.OnListFragmentInteractionListener;
-import com.chicagoteamapp.chicagoteamapp.taskslist.dummy.DummyContent.DummyItem;
+import com.chicagoteamapp.chicagoteamapp.Task;
+import com.chicagoteamapp.chicagoteamapp.Util.DateUtil;
 
 import java.util.List;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
-public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecyclerViewAdapter.ViewHolder> {
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-    private final List<DummyItem> mValues;
-    private final OnListFragmentInteractionListener mListener;
+class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecyclerViewAdapter.ViewHolder> {
 
-    public TasksRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
-        mValues = items;
+    private final List<Task> mTasks;
+    private final OnListInteractionListener mListener;
+
+    public TasksRecyclerViewAdapter(List<Task> tasks, OnListInteractionListener listener) {
+        mTasks = tasks;
         mListener = listener;
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_tasks_list_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
-
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
-                }
-            }
-        });
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+        holder.bindData(mTasks.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return mTasks.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public DummyItem mItem;
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        @BindView(R.id.check_task_complete)
+        CheckBox mCompleted;
+
+        @BindView(R.id.text_task_title)
+        TextView mTitle;
+
+        @BindView(R.id.text_task_date)
+        TextView mDate;
+
+        @BindView(R.id.text_task_progress)
+        TextView mTaskProgress;
+
+        private View mView;
+        private Task mTask;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.item_number);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            ButterKnife.bind(this, mView);
+            mView.setOnClickListener(this);
+        }
+
+        public void bindData(Task task) {
+            mTask = task;
+            mTitle.setText(mTask.getName());
+            mDate.setText(DateUtil.formatDate(mTask.getDate()));
+            mCompleted.setChecked(mTask.isCompleted());
+            mCompleted.setOnCheckedChangeListener((compoundButton, b) -> {
+                mTask.setCompleted(mCompleted.isChecked());
+                mListener.onTaskCompletionChange(mTask);
+            });
+            String of = mView.getContext().getString(R.string.msg_of);
+            String progress = mTask.getCompletedStepsCount() + " " + of + " " + mTask.getStepCount();
+            mTaskProgress.setText(progress);
         }
 
         @Override
-        public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+        public void onClick(View view) {
+            if (mListener != null) {
+                mListener.onListItemClick(mTask);
+            }
         }
+    }
+
+    interface OnListInteractionListener {
+
+        void onListItemClick(Task task);
+
+        void onTaskCompletionChange(Task task);
     }
 }

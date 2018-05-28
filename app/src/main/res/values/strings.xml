@@ -7,4 +7,5 @@
     <string name="title_welcome">Welcome.\nLet\'s reach the goal.</string>
     <string name="action_add_task">Add task</string>
     <string name="action_show_lists">Show lists</string>
+    <string name="msg_of">of</string>
 </resources>
