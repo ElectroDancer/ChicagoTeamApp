@@ -1,8 +1,10 @@
-package com.chicagoteamapp.chicagoteamapp;
+package com.chicagoteamapp.chicagoteamapp.model;
 
 import android.support.annotation.NonNull;
 
-public class Step {
+import java.io.Serializable;
+
+public class Step implements Serializable {
 
     private String mName;
     private boolean mCompleted;

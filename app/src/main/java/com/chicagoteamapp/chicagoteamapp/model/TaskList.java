@@ -1,4 +1,4 @@
-package com.chicagoteamapp.chicagoteamapp;
+package com.chicagoteamapp.chicagoteamapp.model;
 
 import android.support.annotation.NonNull;
 
