@@ -3,6 +3,7 @@ package com.chicagoteamapp.chicagoteamapp.taskslist;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -82,7 +83,11 @@ public class TasksFragment extends Fragment {
         String progress = parseListProgress();
         mListProgress.setText(progress);
 
-        mList.setLayoutManager(new LinearLayoutManager(getContext()));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mList.getContext(),
+                layoutManager.getOrientation());
+        mList.addItemDecoration(dividerItemDecoration);
+        mList.setLayoutManager(layoutManager);
         mList.setAdapter(adapter);
 
         return view;
