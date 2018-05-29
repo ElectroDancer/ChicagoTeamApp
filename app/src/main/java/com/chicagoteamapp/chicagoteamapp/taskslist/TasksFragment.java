@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.chicagoteamapp.chicagoteamapp.R;
-import com.chicagoteamapp.chicagoteamapp.Task;
-import com.chicagoteamapp.chicagoteamapp.TaskList;
+import com.chicagoteamapp.chicagoteamapp.model.Task;
+import com.chicagoteamapp.chicagoteamapp.model.TaskList;
 
 import java.util.Collections;
 import java.util.List;

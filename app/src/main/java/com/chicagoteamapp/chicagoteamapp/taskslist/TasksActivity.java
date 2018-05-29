@@ -6,9 +6,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.chicagoteamapp.chicagoteamapp.R;
-import com.chicagoteamapp.chicagoteamapp.Step;
-import com.chicagoteamapp.chicagoteamapp.Task;
-import com.chicagoteamapp.chicagoteamapp.TaskList;
+import com.chicagoteamapp.chicagoteamapp.model.Step;
+import com.chicagoteamapp.chicagoteamapp.model.Task;
+import com.chicagoteamapp.chicagoteamapp.model.TaskList;
 
 import java.util.ArrayList;
 import java.util.List;
