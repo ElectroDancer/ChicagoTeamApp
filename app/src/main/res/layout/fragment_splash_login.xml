@@ -1,0 +1,73 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.chicagoteamapp.chicagoteamapp.SplashLoginFragment">
+
+    <TextView
+        android:id="@+id/text_welcome"
+        style="@style/Header1Style"
+        android:layout_marginBottom="32dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/title_welcome"
+        android:gravity="bottom"
+        android:layout_weight="1"
+        />
+
+    <Button
+        android:id="@+id/button_create_an_account"
+        android:text="@string/action_create_an_account"
+        style="@style/ButtonCreateAnAccountStyle"
+        />
+
+    <Button
+        android:id="@+id/button_login_with_email"
+        android:text="@string/action_login_with_email"
+        style="@style/ButtonEmailStyle"
+        />
+
+    <FrameLayout
+        android:id="@+id/layout_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/ButtonFacebookLoginStyle"
+        android:clickable="true"
+        android:focusable="true"
+        >
+
+        <ImageView
+            android:id="@+id/image_facebook"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_facebook"
+            android:padding="8dp"
+            android:layout_gravity="center_vertical"
+            />
+
+        <TextView
+            android:id="@+id/text_facebook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/smallTxtSize"
+            android:layout_gravity="center"
+            android:textColor="@color/White"
+            android:text="@string/action_facebook"
+            />
+    </FrameLayout>
+
+    <Button
+        android:id="@+id/button_more_ways_to_login"
+        style="@style/ButtonMoreWaysToLoginStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="@string/action_more_ways_to_login"
+        android:layout_alignParentBottom="true"
+        />
+
+</LinearLayout>

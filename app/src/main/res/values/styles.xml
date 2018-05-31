@@ -17,6 +17,15 @@
         <item name="android:textColor">@color/Black</item>
     </style>
 
+    <style name="Header2Style">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textSize">@dimen/smallTxtSize</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/Black</item>
+    </style>
+
     <style name="ButtonStyle" parent="Widget.AppCompat.Button">
         <item name="android:gravity">center</item>
         <item name="android:layout_height">wrap_content</item>
@@ -38,6 +47,11 @@
         <item name="android:textColor">@color/White</item>
     </style>
 
+    <style name="ButtonTwitterLoginStyle" parent="@style/ButtonStyle">
+        <item name="android:background">@drawable/shape_twitter_login</item>
+        <item name="android:textColor">@color/White</item>
+    </style>
+
     <style name="ButtonCreateAnAccountStyle" parent="@style/ButtonStyle">
         <item name="android:background">@drawable/shape_create_an_account</item>
         <item name="android:textColor">@color/Black</item>
@@ -46,6 +60,7 @@
     <style name="ButtonMoreWaysToLoginStyle" parent="Widget.AppCompat.Button">
         <item name="android:textAllCaps">false</item>
         <item name="android:textColor">@color/Black</item>
+        <item name="android:textSize">@dimen/smallTxtSize</item>
         <item name="android:background">?android:attr/selectableItemBackground</item>
     </style>
 

@@ -8,5 +8,6 @@
     <color name="LightGrey">#EEEEEE</color>
     <color name="DarkYellow">#FFA000</color>
     <color name="White">#FFFFFF</color>
-    <color name="Navy">#1451a6</color>
+    <color name="Navy">#3b5998</color>
+    <color name="Heaven">#00aced</color>
 </resources>

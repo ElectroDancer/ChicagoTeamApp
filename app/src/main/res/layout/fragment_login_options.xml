@@ -1,0 +1,130 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.chicagoteamapp.chicagoteamapp.LoginOptionsFragment"
+    android:orientation="vertical">
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        >
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/ic_close"
+            android:background="@color/White"
+            />
+
+        <TextView
+            android:id="@+id/title_login_options"
+            style="@style/Header2Style"
+            android:layout_gravity="center"
+            android:text="@string/title_other_login_options"
+            android:gravity="bottom"
+            />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@id/layout_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="120dp"
+        style="@style/ButtonEmailStyle"
+        android:clickable="true"
+        android:focusable="true"
+        >
+
+        <ImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/ic_email"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="8dp"
+            android:padding="8dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/smallTxtSize"
+            android:layout_gravity="center"
+            android:textColor="@color/Black"
+            android:text="@string/email"
+            />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/layout_facebook"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/ButtonFacebookLoginStyle"
+        android:clickable="true"
+        android:focusable="true"
+        >
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_facebook"
+            android:padding="8dp"
+            android:layout_gravity="center_vertical"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/smallTxtSize"
+            android:layout_gravity="center"
+            android:textColor="@color/White"
+            android:text="@string/action_facebook"
+            />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/layout_twitter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/ButtonTwitterLoginStyle"
+        android:clickable="true"
+        android:focusable="true"
+        >
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_twitter"
+            android:padding="8dp"
+            android:layout_gravity="center_vertical"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/smallTxtSize"
+            android:layout_gravity="center"
+            android:textColor="@color/White"
+            android:text="@string/twitter"
+            />
+    </FrameLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/smallTxtSize"
+        android:layout_gravity="center"
+        android:textColor="@color/Black"
+        android:text="@string/or"
+        />
+
+    <Button
+        android:id="@+id/button_create_an_account"
+        android:text="@string/action_create_an_account"
+        style="@style/ButtonCreateAnAccountStyle"
+        />
+
+</LinearLayout>

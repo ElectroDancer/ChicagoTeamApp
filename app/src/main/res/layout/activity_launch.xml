@@ -1,71 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/White"
-    tools:context="com.chicagoteamapp.chicagoteamapp.LaunchActivity">
+    >
 
-    <TextView
-        android:id="@+id/text_welcome"
-        style="@style/Header1Style"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/title_welcome"
-        app:layout_constraintBottom_toTopOf="@+id/button_create_an_account"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.225"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.837"
-        tools:ignore="InvalidId" />
+<fragment
+    android:name="com.chicagoteamapp.chicagoteamapp.SplashLoginFragment"
+    android:id="@+id/activity_launch"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    />
 
-    <Button
-        android:id="@+id/button_create_an_account"
-        android:text="@string/action_create_an_account"
-        style="@style/ButtonCreateAnAccountStyle"
-        app:layout_constraintBottom_toTopOf="@+id/button_login_with_email"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        />
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="vertical"-->
+        <!--android:id="@+id/container"-->
+        <!--/>-->
 
-    <Button
-        android:id="@+id/button_login_with_email"
-        android:text="@string/action_login_with_email"
-        style="@style/ButtonEmailStyle"
-        app:layout_constraintBottom_toTopOf="@+id/button_facebook"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        />
 
-    <Button
-        android:id="@+id/button_facebook"
-        style="@style/ButtonFacebookLoginStyle"
-        android:layout_marginBottom="8dp"
-        android:drawablePadding="-30dp"
-        android:drawableStart="@drawable/ic_facebook"
-        android:text="@string/action_facebook"
-        app:layout_constraintBottom_toTopOf="@+id/button_more_ways_to_login"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        />
 
-    <Button
-        android:id="@+id/button_more_ways_to_login"
-        style="@style/ButtonMoreWaysToLoginStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:text="@string/action_more_ways_to_login"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        />
-</android.support.constraint.ConstraintLayout>
+
+
+</LinearLayout>
