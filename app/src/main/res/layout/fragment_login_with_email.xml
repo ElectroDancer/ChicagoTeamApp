@@ -4,10 +4,12 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context="com.chicagoteamapp.chicagoteamapp.Fragments.SignupFragment">
+    tools:context="com.chicagoteamapp.chicagoteamapp.Fragments.LoginWithEmailFragment"
+    android:windowSoftInputMode="adjustResize"
+    >
 
     <ImageButton
-        android:id="@+id/button_return_to_launch_screen_fragment_signup"
+        android:id="@+id/button_return_to_launch_screen_fragment_login_with_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -17,39 +19,23 @@
         />
 
     <TextView
+        android:id="@+id/text_login_with_email_fragment_login_with_email"
         style="@style/Header1Style"
-        android:text="@string/create_an_account"
+        android:text="Login with email"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         />
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/layout_name_fragment_signup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textColorHint="@color/colorHint"
-        >
-
-        <EditText
-            android:id="@+id/edit_add_name_fragment_signup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_name"
-            android:inputType="textEmailAddress"
-            android:textColor="@color/textColor"
-            />
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/layout_email_fragment_signup"
+        android:id="@+id/layout_email_fragment_login_with_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColorHint="@color/colorHint"
+        android:focusable="true"
         >
 
         <EditText
-            android:id="@+id/edit_add_email_fragment_signup"
+            android:id="@+id/edit_add_email_fragment_login_with_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hint_email"
@@ -59,7 +45,7 @@
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/layout_password_fragment_signup"
+        android:id="@+id/layout_password_fragment_login_with_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColorHint="@color/colorHint"
@@ -68,7 +54,7 @@
         >
 
         <EditText
-            android:id="@+id/editTextPassword_fragment_signup"
+            android:id="@+id/edit_text_password_fragment_login_with_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hint_password"
@@ -79,18 +65,17 @@
 
     <Button
         android:layout_marginTop="8dp"
-        android:id="@+id/button_create_an_account_fragment_signup"
+        android:id="@+id/button_create_an_account_fragment_login_with_email"
         android:text="@string/create"
         style="@style/ButtonCreateAnAccountStyle"
         />
 
-    <!--<EditText-->
-        <!--android:id="@+id/editText"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:ems="10"-->
-        <!--android:hint="Password"-->
-        <!--android:inputType="textPassword" />-->
-
-
+    <TextView
+        android:id="@+id/text_forgot_the_password_fragment_login_with_email"
+        style="@style/TextStyle"
+        android:text="@string/forgot_the_password"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="left"
+        />
 </LinearLayout>

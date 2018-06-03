@@ -7,10 +7,17 @@
     <string name="title_welcome">Welcome.\nLet\'s reach the goal.</string>
     <string name="title_other_login_options">Other login options</string>
     <string name="email">Email</string>
+    <string name="hint_email">Email</string>
     <string name="twitter">Twitter</string>
     <string name="or">or</string>
     <string name="create_an_account">Create an account</string>
-    <string name="name">Name</string>
-    <string name="password">Password</string>
+    <string name="hint_name">Name</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_empty">This field cannot be blank</string>
+    <string name="error_email">Please enter a valid email</string>
     <string name="create">Create</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="forgot_the_password">Forgot the password?</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="forgot_password">Forgot password?</string>
 </resources>

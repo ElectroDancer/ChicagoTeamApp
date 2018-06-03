@@ -3,10 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.chicagoteamapp.chicagoteamapp.SplashLoginFragment">
+    tools:context="com.chicagoteamapp.chicagoteamapp.Fragments.SplashLoginFragment">
 
     <TextView
-        android:id="@+id/text_welcome"
         style="@style/Header1Style"
         android:layout_marginBottom="32dp"
         android:layout_marginEnd="8dp"
@@ -18,19 +17,19 @@
         />
 
     <Button
-        android:id="@+id/button_create_an_account"
+        android:id="@+id/button_create_an_account_fragment_splash_login"
         android:text="@string/action_create_an_account"
         style="@style/ButtonCreateAnAccountStyle"
         />
 
     <Button
-        android:id="@+id/button_login_with_email"
+        android:id="@+id/button_login_with_email_fragment_splash_login"
         android:text="@string/action_login_with_email"
         style="@style/ButtonEmailStyle"
         />
 
     <FrameLayout
-        android:id="@+id/layout_email"
+        android:id="@+id/layout_facebook_fragment_splash_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/ButtonFacebookLoginStyle"
@@ -39,7 +38,7 @@
         >
 
         <ImageView
-            android:id="@+id/image_facebook"
+            android:id="@+id/image_facebook_fragment_splash_login"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/ic_facebook"
@@ -48,7 +47,7 @@
             />
 
         <TextView
-            android:id="@+id/text_facebook"
+            android:id="@+id/text_facebook_fragment_splash_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/smallTxtSize"
@@ -59,7 +58,7 @@
     </FrameLayout>
 
     <Button
-        android:id="@+id/button_more_ways_to_login"
+        android:id="@+id/button_more_ways_to_login_fragment_splash_login"
         style="@style/ButtonMoreWaysToLoginStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
