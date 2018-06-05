@@ -39,7 +39,7 @@ public class TasksActivity extends AppCompatActivity {
         mButtonAddTask.setOnClickListener(view -> {
             StepDao stepDao = MyApp.getInstance().getDatabase().stepDao();
             TaskDao taskDao = MyApp.getInstance().getDatabase().taskDao();
-            ListDao listDao = MyApp.getInstance().getDatabase().taskListDao();
+            ListDao listDao = MyApp.getInstance().getDatabase().listDao();
 
             MyList myList = new MyList("List one");
             myList.setId(listDao.insert(myList));
@@ -52,7 +52,7 @@ public class TasksActivity extends AppCompatActivity {
 
         });
 
-        ListDao listDao = MyApp.getInstance().getDatabase().taskListDao();
+        ListDao listDao = MyApp.getInstance().getDatabase().listDao();
 
         ListPagerAdapter adapter =
                 new ListPagerAdapter(getSupportFragmentManager(), listDao.getAllLists());

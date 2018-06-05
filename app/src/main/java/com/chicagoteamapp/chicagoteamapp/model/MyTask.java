@@ -3,6 +3,7 @@ package com.chicagoteamapp.chicagoteamapp.model;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
@@ -12,10 +13,11 @@ import java.util.Date;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
-@Entity(tableName = "Tasks", foreignKeys = @ForeignKey(entity = MyList.class,
-                                                      parentColumns = "id",
-                                                      childColumns = "id_list",
-                                                      onDelete = CASCADE))
+@Entity(tableName = "Tasks", indices = @Index("id_list"), foreignKeys =
+@ForeignKey(entity = MyList.class,
+        parentColumns = "id",
+        childColumns = "id_list",
+        onDelete = CASCADE))
 public class MyTask {
 
     @ColumnInfo(name = "id")

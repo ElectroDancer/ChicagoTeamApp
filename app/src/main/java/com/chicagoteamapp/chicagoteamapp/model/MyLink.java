@@ -3,14 +3,16 @@ package com.chicagoteamapp.chicagoteamapp.model;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
-@Entity(tableName = "Links", foreignKeys = @ForeignKey(entity = MyTask.class,
-                                                        parentColumns = "id",
-                                                        childColumns = "id_task",
-                                                        onDelete = CASCADE))
+@Entity(tableName = "Links", indices = @Index("id_task"), foreignKeys =
+@ForeignKey(entity = MyTask.class,
+        parentColumns = "id",
+        childColumns = "id_task",
+        onDelete = CASCADE))
 public class MyLink {
 
     @ColumnInfo(name = "id")
@@ -64,5 +66,13 @@ public class MyLink {
 
     public void setTitle(String title) {
         mTitle = title;
+    }
+
+    public String getSite() {
+        return mSite;
+    }
+
+    public void setSite(String site) {
+        mSite = site;
     }
 }

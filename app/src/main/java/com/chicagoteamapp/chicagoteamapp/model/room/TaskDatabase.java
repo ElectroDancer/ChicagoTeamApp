@@ -11,7 +11,7 @@ import com.chicagoteamapp.chicagoteamapp.model.MyStep;
 import com.chicagoteamapp.chicagoteamapp.model.MyTask;
 
 @Database(entities = {MyStep.class, MyTask.class, MyList.class, MyFile.class, MyLink.class,
-        MyImage.class}, version = 1)
+        MyImage.class}, version = 1, exportSchema = false)
 public abstract class TaskDatabase extends RoomDatabase {
 
     public abstract StepDao stepDao();
