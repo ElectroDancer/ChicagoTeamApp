@@ -4,26 +4,26 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.chicagoteamapp.chicagoteamapp.model.TaskList;
+import com.chicagoteamapp.chicagoteamapp.model.MyList;
 
 import java.util.List;
 
 class ListPagerAdapter extends FragmentStatePagerAdapter {
 
-    private List<TaskList> mTaskLists;
+    private List<MyList> mLists;
 
-    public ListPagerAdapter(FragmentManager fm, List<TaskList> taskLists) {
+    public ListPagerAdapter(FragmentManager fm, List<MyList> myLists) {
         super(fm);
-        mTaskLists = taskLists;
+        mLists = myLists;
     }
 
     @Override
     public Fragment getItem(int position) {
-        return TasksFragment.newInstance(mTaskLists.get(position));
+        return TasksFragment.newInstance(mLists.get(position));
     }
 
     @Override
     public int getCount() {
-        return mTaskLists.size();
+        return mLists.size();
     }
 }

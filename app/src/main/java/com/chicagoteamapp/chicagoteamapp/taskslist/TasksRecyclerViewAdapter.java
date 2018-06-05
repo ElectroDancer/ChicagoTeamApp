@@ -8,9 +8,10 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.chicagoteamapp.chicagoteamapp.MyApp;
 import com.chicagoteamapp.chicagoteamapp.R;
-import com.chicagoteamapp.chicagoteamapp.model.Task;
-import com.chicagoteamapp.chicagoteamapp.util.DateUtil;
+import com.chicagoteamapp.chicagoteamapp.model.MyTask;
+import com.chicagoteamapp.chicagoteamapp.model.room.StepDao;
 
 import java.util.List;
 
@@ -19,10 +20,10 @@ import butterknife.ButterKnife;
 
 class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Task> mTasks;
+    private final List<MyTask> mTasks;
     private final OnListInteractionListener mListener;
 
-    public TasksRecyclerViewAdapter(List<Task> tasks, OnListInteractionListener listener) {
+    public TasksRecyclerViewAdapter(List<MyTask> tasks, OnListInteractionListener listener) {
         mTasks = tasks;
         mListener = listener;
     }
@@ -48,19 +49,19 @@ class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecyclerViewAda
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.check_task_complete)
-        CheckBox mCompleted;
+        CheckBox mCheckBoxCompleted;
 
         @BindView(R.id.text_task_title)
-        TextView mTitle;
+        TextView mTextViewTitle;
 
         @BindView(R.id.text_task_date)
-        TextView mDate;
+        TextView mTextViewDate;
 
         @BindView(R.id.text_task_progress)
-        TextView mTaskProgress;
+        TextView mTextViewProgress;
 
         private View mView;
-        private Task mTask;
+        private MyTask mTask;
 
         public ViewHolder(View view) {
             super(view);
@@ -69,18 +70,16 @@ class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecyclerViewAda
             mView.setOnClickListener(this);
         }
 
-        public void bindData(Task task) {
+        public void bindData(MyTask task) {
             mTask = task;
-            mTitle.setText(mTask.getName());
-            mDate.setText(DateUtil.formatDate(mTask.getDate()));
-            mCompleted.setChecked(mTask.isCompleted());
-            mCompleted.setOnCheckedChangeListener((compoundButton, b) -> {
-                mTask.setCompleted(mCompleted.isChecked());
-                mListener.onTaskCompletionChange(mTask);
+            mTextViewTitle.setText(mTask.getTitle());
+            mTextViewDate.setText(mTask.getDate());
+            mCheckBoxCompleted.setChecked(mTask.isCompleted());
+            mCheckBoxCompleted.setOnCheckedChangeListener((compoundButton, b) -> {
+                //mTask.setCompleted(mCompleted.isChecked());
+                //mListener.onTaskCompletionChange(mTask);
             });
-            String of = mView.getContext().getString(R.string.msg_of);
-            String progress = mTask.getCompletedStepsCount() + " " + of + " " + mTask.getStepCount();
-            mTaskProgress.setText(progress);
+            mTextViewProgress.setText(parseTaskProgress(mTask));
         }
 
         @Override
@@ -89,12 +88,20 @@ class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecyclerViewAda
                 mListener.onListItemClick(mTask);
             }
         }
+
+        private String parseTaskProgress(MyTask task) {
+            StepDao stepDao = MyApp.getInstance().getDatabase().stepDao();
+            String of = mView.getContext().getString(R.string.msg_of);
+            int completedStepsCount = stepDao.getCompletedStepsCount(task.getId());
+            int stepsCount = stepDao.geStepsCount(task.getId());
+            return completedStepsCount + " " + of + " " + stepsCount;
+        }
     }
 
     interface OnListInteractionListener {
 
-        void onListItemClick(Task task);
+        void onListItemClick(MyTask task);
 
-        void onTaskCompletionChange(Task task);
+        void onTaskCompletionChange(MyTask task);
     }
 }

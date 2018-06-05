@@ -4,14 +4,16 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Button;
 
+import com.chicagoteamapp.chicagoteamapp.MyApp;
 import com.chicagoteamapp.chicagoteamapp.R;
-import com.chicagoteamapp.chicagoteamapp.model.Step;
-import com.chicagoteamapp.chicagoteamapp.model.Task;
-import com.chicagoteamapp.chicagoteamapp.model.TaskList;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.chicagoteamapp.chicagoteamapp.model.MyList;
+import com.chicagoteamapp.chicagoteamapp.model.MyStep;
+import com.chicagoteamapp.chicagoteamapp.model.MyTask;
+import com.chicagoteamapp.chicagoteamapp.model.room.ListDao;
+import com.chicagoteamapp.chicagoteamapp.model.room.StepDao;
+import com.chicagoteamapp.chicagoteamapp.model.room.TaskDao;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,7 +24,10 @@ public class TasksActivity extends AppCompatActivity {
     TabLayout mTabDots;
 
     @BindView(R.id.pager_lists)
-    ViewPager mLists;
+    ViewPager mPagerLists;
+
+    @BindView(R.id.button_add_task)
+    Button mButtonAddTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,36 +36,27 @@ public class TasksActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        List<Step> steps = new ArrayList<>();
-        steps.add(new Step("Step one"));
-        steps.add(new Step("Step two"));
-        steps.add(new Step("Step three"));
-        steps.add(new Step("Step four"));
-        steps.add(new Step("Step five"));
+        mButtonAddTask.setOnClickListener(view -> {
+            StepDao stepDao = MyApp.getInstance().getDatabase().stepDao();
+            TaskDao taskDao = MyApp.getInstance().getDatabase().taskDao();
+            ListDao listDao = MyApp.getInstance().getDatabase().taskListDao();
 
-        List<Task> tasks = new ArrayList<>();
-        tasks.add(new Task("Task one", steps));
-        tasks.add(new Task("Task two", steps));
-        tasks.add(new Task("Task three", steps));
-        tasks.add(new Task("Task three", steps));
-        tasks.add(new Task("Task three", steps));
-        tasks.add(new Task("Task three", steps));
-        tasks.add(new Task("Task three", steps));
-        tasks.add(new Task("Task three", steps));
-        tasks.add(new Task("Task three", steps));
-        tasks.add(new Task("Task three", steps));
-        tasks.add(new Task("Task three", steps));
-        tasks.add(new Task("Task three", steps));
-        tasks.add(new Task("Task three", steps));
-        tasks.add(new Task("Task three", steps));
+            MyList myList = new MyList("List one");
+            myList.setId(listDao.insert(myList));
 
-        List<TaskList> lists = new ArrayList<>();
-        lists.add(new TaskList("List one", tasks));
-        lists.add(new TaskList("List two", tasks));
-        lists.add(new TaskList("List three", tasks));
-        lists.add(new TaskList("List four", tasks));
+            MyTask task = new MyTask("MyTask one", myList.getId());
+            task.setId(taskDao.insert(task));
 
-        mLists.setAdapter(new ListPagerAdapter(getSupportFragmentManager(), lists));
-        mTabDots.setupWithViewPager(mLists, true);
+            MyStep myStep = new MyStep("MyStep one", task.getId());
+            myStep.setId(stepDao.insert(myStep));
+
+        });
+
+        ListDao listDao = MyApp.getInstance().getDatabase().taskListDao();
+
+        ListPagerAdapter adapter =
+                new ListPagerAdapter(getSupportFragmentManager(), listDao.getAllLists());
+        mPagerLists.setAdapter(adapter);
+        mTabDots.setupWithViewPager(mPagerLists, true);
     }
 }

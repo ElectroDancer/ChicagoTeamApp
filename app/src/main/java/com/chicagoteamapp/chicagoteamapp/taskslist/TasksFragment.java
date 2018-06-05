@@ -11,9 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.chicagoteamapp.chicagoteamapp.MyApp;
 import com.chicagoteamapp.chicagoteamapp.R;
-import com.chicagoteamapp.chicagoteamapp.model.Task;
-import com.chicagoteamapp.chicagoteamapp.model.TaskList;
+import com.chicagoteamapp.chicagoteamapp.model.MyList;
+import com.chicagoteamapp.chicagoteamapp.model.MyTask;
+import com.chicagoteamapp.chicagoteamapp.model.room.TaskDao;
 
 import java.util.Collections;
 import java.util.List;
@@ -25,37 +27,37 @@ import static com.chicagoteamapp.chicagoteamapp.taskslist.TasksRecyclerViewAdapt
 
 public class TasksFragment extends Fragment {
 
-    public static final String BUNDLE_TASK_LIST = "TASK_LIST";
+    public static final String BUNDLE_LIST = "LIST";
 
     @BindView(R.id.list_tasks)
-    RecyclerView mList;
+    RecyclerView mRecyclerViewTasks;
 
     @BindView(R.id.text_list_title)
-    TextView mListTitle;
+    TextView mTextViewTitle;
 
     @BindView(R.id.text_list_progress)
-    TextView mListProgress;
+    TextView mTextViewProgress;
 
-    private TaskList mTaskList;
+    private List<MyTask> mTasks;
+    private MyList mList;
     private OnListInteractionListener mListener = new OnListInteractionListener() {
 
         @Override
-        public void onListItemClick(Task task) {
+        public void onListItemClick(MyTask task) {
 
         }
 
         @Override
-        public void onTaskCompletionChange(Task task) {
-            List<Task> tasks = mTaskList.getTasks();
-            tasks.get(tasks.indexOf(task)).setCompleted(task.isCompleted());
-            String progress = parseListProgress();
-            mListProgress.setText(progress);
+        public void onTaskCompletionChange(MyTask task) {
+            //mTasks.get(mTasks.indexOf(task)).setCompleted(task.isCompleted());
+            //String progress = parseListProgress();
+            //mListProgress.setText(progress);
         }
     };
 
-    public static TasksFragment newInstance(TaskList taskList) {
+    public static TasksFragment newInstance(MyList list) {
         Bundle args = new Bundle();
-        args.putSerializable(BUNDLE_TASK_LIST, taskList);
+        args.putSerializable(BUNDLE_LIST, list);
         TasksFragment fragment = new TasksFragment();
         fragment.setArguments(args);
         return fragment;
@@ -72,32 +74,34 @@ public class TasksFragment extends Fragment {
 
         Bundle args = getArguments();
         if (args != null) {
-            mTaskList = (TaskList) args.getSerializable(BUNDLE_TASK_LIST);
-            adapter = new TasksRecyclerViewAdapter(mTaskList.getTasks(), mListener);
+            mList = (MyList) args.getSerializable(BUNDLE_LIST);
+            if (mList != null)  mTextViewTitle.setText(mList.getName());
+            mTasks = MyApp.getInstance().getDatabase().taskDao().getTasks(mList.getId());
+            adapter = new TasksRecyclerViewAdapter(mTasks, mListener);
         } else {
             adapter = new TasksRecyclerViewAdapter(Collections.emptyList(), mListener);
         }
 
-        mListTitle.setText(mTaskList.getName());
 
-        String progress = parseListProgress();
-        mListProgress.setText(progress);
+
+        String progress = parseListProgress(mList);
+        mTextViewProgress.setText(progress);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mList.getContext(),
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(
+                mRecyclerViewTasks.getContext(),
                 layoutManager.getOrientation());
-        mList.addItemDecoration(dividerItemDecoration);
-        mList.setLayoutManager(layoutManager);
-        mList.setAdapter(adapter);
+        mRecyclerViewTasks.addItemDecoration(dividerItemDecoration);
+        mRecyclerViewTasks.setLayoutManager(layoutManager);
+        mRecyclerViewTasks.setAdapter(adapter);
 
         return view;
     }
 
-    private String parseListProgress() {
-        return mTaskList.getCompletedTasksCount()
-                + " "
-                + getString(R.string.msg_of)
-                + " "
-                + mTaskList.getTaskCount();
+    private String parseListProgress(MyList list) {
+        TaskDao taskDao = MyApp.getInstance().getDatabase().taskDao();
+        int count = taskDao.geTasksCount(list.getId());
+        int tasksCompleted = taskDao.getCompletedTasksCount(list.getId());
+        return tasksCompleted + " " + getString(R.string.msg_of) + " " + count;
     }
 }
