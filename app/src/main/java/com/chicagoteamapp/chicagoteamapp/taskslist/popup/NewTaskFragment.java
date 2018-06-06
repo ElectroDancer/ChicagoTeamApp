@@ -85,6 +85,7 @@ public class NewTaskFragment extends Fragment {
 
     @OnClick(R.id.image_button_close)
     public void onButtonCloseClick() {
+        ViewUtil.hideKeyboard(getActivity());
         ViewUtil.slideDown(Objects.requireNonNull(getView()));
         FrameLayout layout =
                 Objects.requireNonNull(getActivity()).findViewById(R.id.frame_layout_dimming);

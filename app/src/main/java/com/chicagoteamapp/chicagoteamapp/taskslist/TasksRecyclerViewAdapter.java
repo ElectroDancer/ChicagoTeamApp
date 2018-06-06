@@ -65,7 +65,7 @@ class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecyclerViewAda
 
         public ViewHolder(View view) {
             super(view);
-            ButterKnife.bind(this, mView);
+            ButterKnife.bind(this, view);
             mView = view;
             mView.setOnClickListener(this);
         }

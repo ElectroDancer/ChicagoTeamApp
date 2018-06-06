@@ -5,13 +5,13 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 
 import com.chicagoteamapp.chicagoteamapp.MyApp;
@@ -35,6 +35,9 @@ public class ListsFragment extends Fragment {
     @BindView(R.id.list_lists)
     RecyclerView mRecyclerView;
 
+    @BindView(R.id.edit_text_new_list)
+    EditText mEditTextNewList;
+
     private ListsRecyclerViewAdapter mAdapter;
     private OnDataChangeListener mListener;
 
@@ -45,21 +48,19 @@ public class ListsFragment extends Fragment {
 
         ButterKnife.bind(this, view);
 
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        invalidateList();
+
+        return view;
+    }
+
+    private void invalidateList() {
         ListDao listDao = MyApp.getInstance().getDatabase().listDao();
         List<MyList> lists = listDao.getAllLists();
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(
-                mRecyclerView.getContext(),
-                layoutManager.getOrientation());
-        mRecyclerView.addItemDecoration(dividerItemDecoration);
-        mRecyclerView.setLayoutManager(layoutManager);
         mAdapter = new ListsRecyclerViewAdapter(lists, list -> {
 
         });
         mRecyclerView.setAdapter(mAdapter);
-
-        return view;
     }
 
     @Override
@@ -75,7 +76,13 @@ public class ListsFragment extends Fragment {
 
     @OnClick(R.id.button_add_list)
     public void onButtonAddListClick() {
-
+        MyList list = new MyList(mEditTextNewList.getText().toString());
+        mEditTextNewList.getText().clear();
+        ListDao listDao = MyApp.getInstance().getDatabase().listDao();
+        listDao.insert(list);
+        invalidateList();
+        mListener.onListChanged();
+        onButtonCloseClick();
     }
 
     @OnClick(R.id.button_profile)
@@ -85,6 +92,7 @@ public class ListsFragment extends Fragment {
 
     @OnClick(R.id.image_button_close)
     public void onButtonCloseClick() {
+        ViewUtil.hideKeyboard(getActivity());
         ViewUtil.slideDown(Objects.requireNonNull(getView()));
         FrameLayout layout =
                 Objects.requireNonNull(getActivity()).findViewById(R.id.frame_layout_dimming);

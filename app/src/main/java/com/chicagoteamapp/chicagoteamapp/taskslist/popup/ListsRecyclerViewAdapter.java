@@ -59,7 +59,7 @@ public class ListsRecyclerViewAdapter extends
 
         public ViewHolder(View view) {
             super(view);
-            ButterKnife.bind(this, mView);
+            ButterKnife.bind(this, view);
             mView = view;
             mView.setOnClickListener(this);
         }
