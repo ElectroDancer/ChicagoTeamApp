@@ -20,8 +20,8 @@ import butterknife.ButterKnife;
 
 class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecyclerViewAdapter.ViewHolder> {
 
-    private final List<MyTask> mTasks;
-    private final OnListInteractionListener mListener;
+    private List<MyTask> mTasks;
+    private OnListInteractionListener mListener;
 
     public TasksRecyclerViewAdapter(List<MyTask> tasks, OnListInteractionListener listener) {
         mTasks = tasks;
@@ -65,8 +65,8 @@ class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecyclerViewAda
 
         public ViewHolder(View view) {
             super(view);
-            mView = view;
             ButterKnife.bind(this, mView);
+            mView = view;
             mView.setOnClickListener(this);
         }
 

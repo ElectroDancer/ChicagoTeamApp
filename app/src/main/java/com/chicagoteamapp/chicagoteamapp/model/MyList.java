@@ -14,11 +14,11 @@ public class MyList implements Serializable {
     @PrimaryKey(autoGenerate = true)
     private long mId;
 
-    @ColumnInfo(name = "name")
-    private String mName;
+    @ColumnInfo(name = "title")
+    private String mTitle;
 
-    public MyList(@NonNull String name) {
-        mName = name;
+    public MyList(@NonNull String title) {
+        mTitle = title;
     }
 
     public long getId() {
@@ -29,11 +29,11 @@ public class MyList implements Serializable {
         mId = id;
     }
 
-    public String getName() {
-        return mName;
+    public String getTitle() {
+        return mTitle;
     }
 
-    public void setName(@NonNull String name) {
-        mName = name;
+    public void setTitle(@NonNull String title) {
+        mTitle = title;
     }
 }

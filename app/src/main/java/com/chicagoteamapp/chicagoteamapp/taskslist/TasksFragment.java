@@ -2,6 +2,7 @@ package com.chicagoteamapp.chicagoteamapp.taskslist;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -40,6 +41,7 @@ public class TasksFragment extends Fragment {
 
     private List<MyTask> mTasks;
     private MyList mList;
+    private  TasksRecyclerViewAdapter mAdapter;
     private OnListInteractionListener mListener = new OnListInteractionListener() {
 
         @Override
@@ -64,28 +66,25 @@ public class TasksFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle args = getArguments();
+        if (args != null) {
+            mList = (MyList) args.getSerializable(BUNDLE_LIST);
+            mTasks = MyApp.getInstance().getDatabase().taskDao().getTasks(mList.getId());
+        } else {
+            mTasks = Collections.emptyList();
+        }
+    }
+
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tasks, container, false);
 
         ButterKnife.bind(this, view);
 
-        TasksRecyclerViewAdapter adapter;
-
-        Bundle args = getArguments();
-        if (args != null) {
-            mList = (MyList) args.getSerializable(BUNDLE_LIST);
-            if (mList != null)  mTextViewTitle.setText(mList.getName());
-            mTasks = MyApp.getInstance().getDatabase().taskDao().getTasks(mList.getId());
-            adapter = new TasksRecyclerViewAdapter(mTasks, mListener);
-        } else {
-            adapter = new TasksRecyclerViewAdapter(Collections.emptyList(), mListener);
-        }
-
-
-
-        String progress = parseListProgress(mList);
-        mTextViewProgress.setText(progress);
+        if (mList != null)  mTextViewTitle.setText(mList.getTitle());
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(
@@ -93,9 +92,17 @@ public class TasksFragment extends Fragment {
                 layoutManager.getOrientation());
         mRecyclerViewTasks.addItemDecoration(dividerItemDecoration);
         mRecyclerViewTasks.setLayoutManager(layoutManager);
-        mRecyclerViewTasks.setAdapter(adapter);
+        invalidateList();
 
         return view;
+    }
+
+    public void invalidateList() {
+        String progress = parseListProgress(mList);
+        mTextViewProgress.setText(progress);
+        mTasks = MyApp.getInstance().getDatabase().taskDao().getTasks(mList.getId());
+        mAdapter = new TasksRecyclerViewAdapter(mTasks, mListener);
+        mRecyclerViewTasks.setAdapter(mAdapter);
     }
 
     private String parseListProgress(MyList list) {

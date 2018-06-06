@@ -8,7 +8,7 @@
     tools:context=".taskslist.TasksActivity">
 
     <android.support.design.widget.TabLayout
-        android:id="@+id/tab_dots"
+        android:id="@+id/tab_layout_dots"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -26,7 +26,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tab_dots"
+        app:layout_constraintTop_toBottomOf="@id/tab_layout_dots"
         tools:layout="@layout/fragment_tasks" />
 
     <Button
@@ -47,7 +47,7 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageButton
-        android:id="@+id/button_show_lists"
+        android:id="@+id/image_button_show_lists"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginBottom="24dp"
@@ -58,5 +58,25 @@
         android:elevation="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/frame_layout_dimming"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/Black"
+        android:alpha="0"
+        android:visibility="invisible" />
+
+    <FrameLayout
+        android:id="@+id/frame_layout_popup"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:layout_alignParentBottom="true"
+        android:elevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+    </FrameLayout>
 
 </android.support.constraint.ConstraintLayout>
