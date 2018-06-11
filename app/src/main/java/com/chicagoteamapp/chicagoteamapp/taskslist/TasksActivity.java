@@ -6,13 +6,12 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 
 import com.chicagoteamapp.chicagoteamapp.MyApp;
 import com.chicagoteamapp.chicagoteamapp.R;
 import com.chicagoteamapp.chicagoteamapp.taskslist.popup.ListsFragment;
 import com.chicagoteamapp.chicagoteamapp.taskslist.popup.NewTaskFragment;
-import com.chicagoteamapp.chicagoteamapp.util.ViewUtil;
+import com.furianrt.bottompopupwindow.BottomPopupWindow;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,11 +28,8 @@ public class TasksActivity extends AppCompatActivity {
     @BindView(R.id.button_add_task)
     Button mButtonAddTask;
 
-    @BindView(R.id.frame_layout_popup)
-    FrameLayout mLayoutPopup;
-
-    @BindView(R.id.frame_layout_dimming)
-    FrameLayout mLayoutDimming;
+    @BindView(R.id.bottom_popup_window)
+    BottomPopupWindow mPopupWindow;
 
     private ListPagerAdapter mAdapter;
 
@@ -66,34 +62,21 @@ public class TasksActivity extends AppCompatActivity {
     public void onButtonAddTaskClick() {
         NewTaskFragment fragment =
                 NewTaskFragment.newInstance(mAdapter.getList(mPagerLists.getCurrentItem()).getId());
-
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.frame_layout_popup, fragment, fragment.getTag())
-                .commit();
-
-        ViewUtil.slideUp(mLayoutPopup);
-        mLayoutDimming.setVisibility(View.VISIBLE);
-        ViewUtil.increaseAlpha(mLayoutDimming);
+        mPopupWindow.setFragment(fragment);
+        mPopupWindow.show();
     }
 
     @OnClick(R.id.image_button_show_lists)
     public void onButtonShowListsClick() {
         ListsFragment fragment = new ListsFragment();
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.frame_layout_popup, fragment, fragment.getTag())
-                .commit();
-
-        ViewUtil.slideUp(mLayoutPopup);
-        mLayoutDimming.setVisibility(View.VISIBLE);
-        ViewUtil.increaseAlpha(mLayoutDimming);
+        mPopupWindow.setFragment(fragment);
+        mPopupWindow.show();
     }
 
     @Override
     public void onBackPressed() {
-        if (mLayoutPopup.getY() != 0.0f) {
-            ViewUtil.hideKeyboard(this);
-            ViewUtil.slideDown(mLayoutPopup);
-            ViewUtil.decreaseAlpha(mLayoutDimming);
+        if (mPopupWindow.isShown()) {
+            mPopupWindow.hide();
         } else {
             super.onBackPressed();
         }

@@ -59,26 +59,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <FrameLayout
-        android:id="@+id/frame_layout_dimming"
+    <com.furianrt.bottompopupwindow.BottomPopupWindow
+        android:id="@+id/bottom_popup_window"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/Black"
-        android:alpha="0"
-        android:focusable="true"
-        android:clickable="true"
-        android:visibility="invisible" />
+        android:elevation="10dp"/>
 
-    <FrameLayout
-        android:id="@+id/frame_layout_popup"
-        android:layout_width="match_parent"
-        android:layout_height="350dp"
-        android:layout_alignParentBottom="true"
-        android:elevation="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-    </FrameLayout>
 
 </android.support.constraint.ConstraintLayout>

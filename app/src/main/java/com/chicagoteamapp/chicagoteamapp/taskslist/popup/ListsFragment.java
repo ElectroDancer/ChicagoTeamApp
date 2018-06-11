@@ -10,12 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 
 import com.chicagoteamapp.chicagoteamapp.MyApp;
 import com.chicagoteamapp.chicagoteamapp.R;
 import com.chicagoteamapp.chicagoteamapp.model.MyList;
 import com.chicagoteamapp.chicagoteamapp.util.ViewUtil;
+import com.furianrt.bottompopupwindow.BottomPopupWindow;
 
 import java.util.Objects;
 
@@ -92,9 +92,8 @@ public class ListsFragment extends Fragment {
     @OnClick(R.id.image_button_close)
     public void onButtonCloseClick() {
         ViewUtil.hideKeyboard(getActivity());
-        ViewUtil.slideDown(Objects.requireNonNull(getView()));
-        FrameLayout layout =
-                Objects.requireNonNull(getActivity()).findViewById(R.id.frame_layout_dimming);
-        ViewUtil.decreaseAlpha(layout);
+        BottomPopupWindow popupWindow =
+                Objects.requireNonNull(getActivity()).findViewById(R.id.bottom_popup_window);
+        popupWindow.hide();
     }
 }
