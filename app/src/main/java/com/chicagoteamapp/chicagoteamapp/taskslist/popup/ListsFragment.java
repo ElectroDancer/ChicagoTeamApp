@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +31,7 @@ public class ListsFragment extends Fragment {
     Button mButtonAddList;
 
     @BindView(R.id.list_lists)
-    RecyclerView mRecyclerView;
+    MaxHeightRecyclerView mRecyclerView;
 
     @BindView(R.id.edit_text_new_list)
     EditText mEditTextNewList;
@@ -47,7 +46,10 @@ public class ListsFragment extends Fragment {
 
         @Override
         public void onListItemLongClick(MyList list) {
-
+            MyApp.getInstance()
+                    .getDatabase()
+                    .listDao()
+                    .delete(list);
         }
     };
 
@@ -65,9 +67,7 @@ public class ListsFragment extends Fragment {
                 .getDatabase()
                 .listDao()
                 .getAllLists()
-                .observe(this, lists -> {
-                    mAdapter.submitList(lists);
-                });
+                .observe(this, lists -> mAdapter.submitList(lists));
 
         mRecyclerView.setAdapter(mAdapter);
 

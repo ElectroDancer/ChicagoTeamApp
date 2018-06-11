@@ -7,13 +7,14 @@
     android:background="@drawable/shape_popup_view"
     tools:context=".taskslist.popup.ListsFragment">
 
-    <android.support.v7.widget.RecyclerView
+    <com.chicagoteamapp.chicagoteamapp.taskslist.popup.MaxHeightRecyclerView
         android:id="@+id/list_lists"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:maxHeight="100dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
