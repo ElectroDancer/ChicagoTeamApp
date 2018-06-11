@@ -47,7 +47,10 @@ public class TasksFragment extends Fragment {
 
         @Override
         public void onListItemLongClick(MyTask task) {
-
+            MyApp.getInstance()
+                    .getDatabase()
+                    .taskDao()
+                    .delete(task);
         }
     };
 

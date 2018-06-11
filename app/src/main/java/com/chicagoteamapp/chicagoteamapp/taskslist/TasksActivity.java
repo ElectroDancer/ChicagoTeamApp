@@ -44,11 +44,6 @@ public class TasksActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        mLayoutDimming.setOnClickListener(view -> {
-            ViewUtil.slideDown(mLayoutPopup);
-            ViewUtil.decreaseAlpha(mLayoutDimming);
-        });
-
         mAdapter = new ListPagerAdapter(getSupportFragmentManager());
         mPagerLists.setAdapter(mAdapter);
         mTabDots.setupWithViewPager(mPagerLists, true);
@@ -91,5 +86,16 @@ public class TasksActivity extends AppCompatActivity {
         ViewUtil.slideUp(mLayoutPopup);
         mLayoutDimming.setVisibility(View.VISIBLE);
         ViewUtil.increaseAlpha(mLayoutDimming);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mLayoutPopup.getY() != 0.0f) {
+            ViewUtil.hideKeyboard(this);
+            ViewUtil.slideDown(mLayoutPopup);
+            ViewUtil.decreaseAlpha(mLayoutDimming);
+        } else {
+            super.onBackPressed();
+        }
     }
 }
