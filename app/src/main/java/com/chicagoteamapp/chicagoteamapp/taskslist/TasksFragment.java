@@ -14,9 +14,9 @@ import android.widget.TextView;
 
 import com.chicagoteamapp.chicagoteamapp.MyApp;
 import com.chicagoteamapp.chicagoteamapp.R;
-import com.chicagoteamapp.chicagoteamapp.model.MyList;
-import com.chicagoteamapp.chicagoteamapp.model.MyTask;
-import com.chicagoteamapp.chicagoteamapp.model.room.TaskDao;
+import com.chicagoteamapp.chicagoteamapp.data.model.MyList;
+import com.chicagoteamapp.chicagoteamapp.data.model.MyTask;
+import com.chicagoteamapp.chicagoteamapp.data.room.TaskDao;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

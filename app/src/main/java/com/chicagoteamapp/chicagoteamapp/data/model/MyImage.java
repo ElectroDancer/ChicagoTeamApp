@@ -1,4 +1,4 @@
-package com.chicagoteamapp.chicagoteamapp.model;
+package com.chicagoteamapp.chicagoteamapp.data.model;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
@@ -8,12 +8,12 @@ import android.arch.persistence.room.PrimaryKey;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
-@Entity(tableName = "Links", indices = @Index("id_task"), foreignKeys =
+@Entity(tableName = "Images", indices = @Index("id_task"), foreignKeys =
 @ForeignKey(entity = MyTask.class,
         parentColumns = "id",
         childColumns = "id_task",
         onDelete = CASCADE))
-public class MyLink {
+public class MyImage {
 
     @ColumnInfo(name = "id")
     @PrimaryKey(autoGenerate = true)
@@ -25,13 +25,7 @@ public class MyLink {
     @ColumnInfo(name = "reference")
     private String mReference;
 
-    @ColumnInfo(name = "title")
-    private String mTitle;
-
-    @ColumnInfo(name = "site")
-    private String mSite;
-
-    public MyLink(long taskId, String reference) {
+    public MyImage(long taskId, String reference) {
         mTaskId = taskId;
         mReference = reference;
     }
@@ -58,21 +52,5 @@ public class MyLink {
 
     public void setReference(String reference) {
         mReference = reference;
-    }
-
-    public String getTitle() {
-        return mTitle;
-    }
-
-    public void setTitle(String title) {
-        mTitle = title;
-    }
-
-    public String getSite() {
-        return mSite;
-    }
-
-    public void setSite(String site) {
-        mSite = site;
     }
 }

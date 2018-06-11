@@ -42,7 +42,7 @@
         android:paddingStart="12dp"
         android:textAllCaps="false"
         android:textSize="7pt"
-        android:elevation="5dp"
+        android:elevation="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -55,7 +55,7 @@
         android:background="@drawable/btn_show_lists"
         android:contentDescription="@string/action_show_lists"
         android:src="@drawable/ic_action_menu"
-        android:elevation="5dp"
+        android:elevation="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

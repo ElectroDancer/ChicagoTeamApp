@@ -12,8 +12,8 @@ import android.widget.ImageButton;
 
 import com.chicagoteamapp.chicagoteamapp.MyApp;
 import com.chicagoteamapp.chicagoteamapp.R;
-import com.chicagoteamapp.chicagoteamapp.model.MyTask;
-import com.chicagoteamapp.chicagoteamapp.model.room.TaskDao;
+import com.chicagoteamapp.chicagoteamapp.data.model.MyTask;
+import com.chicagoteamapp.chicagoteamapp.data.room.TaskDao;
 import com.chicagoteamapp.chicagoteamapp.util.ViewUtil;
 import com.furianrt.bottompopupwindow.BottomPopupWindow;
 

@@ -13,7 +13,7 @@ import android.widget.EditText;
 
 import com.chicagoteamapp.chicagoteamapp.MyApp;
 import com.chicagoteamapp.chicagoteamapp.R;
-import com.chicagoteamapp.chicagoteamapp.model.MyList;
+import com.chicagoteamapp.chicagoteamapp.data.model.MyList;
 import com.chicagoteamapp.chicagoteamapp.util.ViewUtil;
 import com.furianrt.bottompopupwindow.BottomPopupWindow;
 

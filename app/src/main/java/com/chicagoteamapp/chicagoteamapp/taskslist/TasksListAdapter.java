@@ -12,13 +12,13 @@ import android.widget.TextView;
 
 import com.chicagoteamapp.chicagoteamapp.MyApp;
 import com.chicagoteamapp.chicagoteamapp.R;
-import com.chicagoteamapp.chicagoteamapp.model.MyTask;
-import com.chicagoteamapp.chicagoteamapp.model.room.StepDao;
+import com.chicagoteamapp.chicagoteamapp.data.model.MyTask;
+import com.chicagoteamapp.chicagoteamapp.data.room.StepDao;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class TasksListAdapter extends ListAdapter<MyTask, TasksListAdapter.ViewHolder> {
+class TasksListAdapter extends ListAdapter<MyTask, TasksListAdapter.ViewHolder> {
 
     private OnListInteractionListener mListener;
 

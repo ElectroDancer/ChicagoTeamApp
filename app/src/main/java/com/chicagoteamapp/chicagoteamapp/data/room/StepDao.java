@@ -1,4 +1,4 @@
-package com.chicagoteamapp.chicagoteamapp.model.room;
+package com.chicagoteamapp.chicagoteamapp.data.room;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
@@ -7,7 +7,7 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
-import com.chicagoteamapp.chicagoteamapp.model.MyStep;
+import com.chicagoteamapp.chicagoteamapp.data.model.MyStep;
 
 import java.util.List;
 

@@ -1,14 +1,14 @@
-package com.chicagoteamapp.chicagoteamapp.model.room;
+package com.chicagoteamapp.chicagoteamapp.data.room;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.RoomDatabase;
 
-import com.chicagoteamapp.chicagoteamapp.model.MyFile;
-import com.chicagoteamapp.chicagoteamapp.model.MyImage;
-import com.chicagoteamapp.chicagoteamapp.model.MyLink;
-import com.chicagoteamapp.chicagoteamapp.model.MyList;
-import com.chicagoteamapp.chicagoteamapp.model.MyStep;
-import com.chicagoteamapp.chicagoteamapp.model.MyTask;
+import com.chicagoteamapp.chicagoteamapp.data.model.MyFile;
+import com.chicagoteamapp.chicagoteamapp.data.model.MyImage;
+import com.chicagoteamapp.chicagoteamapp.data.model.MyLink;
+import com.chicagoteamapp.chicagoteamapp.data.model.MyList;
+import com.chicagoteamapp.chicagoteamapp.data.model.MyStep;
+import com.chicagoteamapp.chicagoteamapp.data.model.MyTask;
 
 @Database(entities = {MyStep.class, MyTask.class, MyList.class, MyFile.class, MyLink.class,
         MyImage.class}, version = 1, exportSchema = false)

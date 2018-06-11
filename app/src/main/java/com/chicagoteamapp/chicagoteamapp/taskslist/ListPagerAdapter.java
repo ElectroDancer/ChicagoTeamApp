@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.chicagoteamapp.chicagoteamapp.model.MyList;
+import com.chicagoteamapp.chicagoteamapp.data.model.MyList;
 
 import java.util.ArrayList;
 import java.util.Collections;

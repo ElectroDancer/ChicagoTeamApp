@@ -3,7 +3,7 @@ package com.chicagoteamapp.chicagoteamapp;
 import android.app.Application;
 import android.arch.persistence.room.Room;
 
-import com.chicagoteamapp.chicagoteamapp.model.room.TaskDatabase;
+import com.chicagoteamapp.chicagoteamapp.data.room.TaskDatabase;
 
 public class MyApp extends Application {
 

@@ -1,20 +1,19 @@
-package com.chicagoteamapp.chicagoteamapp.model;
+package com.chicagoteamapp.chicagoteamapp.data.model;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
-import android.support.annotation.NonNull;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
-@Entity(tableName = "Steps", indices = @Index("id_task"), foreignKeys =
+@Entity(tableName = "Links", indices = @Index("id_task"), foreignKeys =
 @ForeignKey(entity = MyTask.class,
         parentColumns = "id",
         childColumns = "id_task",
         onDelete = CASCADE))
-public class MyStep {
+public class MyLink {
 
     @ColumnInfo(name = "id")
     @PrimaryKey(autoGenerate = true)
@@ -23,15 +22,18 @@ public class MyStep {
     @ColumnInfo(name = "id_task")
     private long mTaskId;
 
+    @ColumnInfo(name = "reference")
+    private String mReference;
+
     @ColumnInfo(name = "title")
     private String mTitle;
 
-    @ColumnInfo(name = "completed")
-    private boolean mCompleted;
+    @ColumnInfo(name = "site")
+    private String mSite;
 
-    public MyStep(@NonNull String title, long taskId) {
-        mTitle = title;
+    public MyLink(long taskId, String reference) {
         mTaskId = taskId;
+        mReference = reference;
     }
 
     public long getId() {
@@ -50,19 +52,27 @@ public class MyStep {
         mTaskId = taskId;
     }
 
+    public String getReference() {
+        return mReference;
+    }
+
+    public void setReference(String reference) {
+        mReference = reference;
+    }
+
     public String getTitle() {
         return mTitle;
     }
 
-    public void setTitle(@NonNull String title) {
+    public void setTitle(String title) {
         mTitle = title;
     }
 
-    public boolean isCompleted() {
-        return mCompleted;
+    public String getSite() {
+        return mSite;
     }
 
-    public void setCompleted(boolean completed) {
-        mCompleted = completed;
+    public void setSite(String site) {
+        mSite = site;
     }
 }
