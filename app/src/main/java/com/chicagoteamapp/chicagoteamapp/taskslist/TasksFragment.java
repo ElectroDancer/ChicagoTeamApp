@@ -18,13 +18,10 @@ import com.chicagoteamapp.chicagoteamapp.model.MyList;
 import com.chicagoteamapp.chicagoteamapp.model.MyTask;
 import com.chicagoteamapp.chicagoteamapp.model.room.TaskDao;
 
-import java.util.Collections;
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.chicagoteamapp.chicagoteamapp.taskslist.TasksRecyclerViewAdapter.OnListInteractionListener;
+import static com.chicagoteamapp.chicagoteamapp.taskslist.TasksListAdapter.OnListInteractionListener;
 
 public class TasksFragment extends Fragment {
 
@@ -39,9 +36,8 @@ public class TasksFragment extends Fragment {
     @BindView(R.id.text_list_progress)
     TextView mTextViewProgress;
 
-    private List<MyTask> mTasks;
     private MyList mList;
-    private  TasksRecyclerViewAdapter mAdapter;
+    private TasksListAdapter mAdapter;
     private OnListInteractionListener mListener = new OnListInteractionListener() {
 
         @Override
@@ -50,10 +46,8 @@ public class TasksFragment extends Fragment {
         }
 
         @Override
-        public void onTaskCompletionChange(MyTask task) {
-            //mTasks.get(mTasks.indexOf(task)).setCompleted(task.isCompleted());
-            //String progress = parseListProgress();
-            //mListProgress.setText(progress);
+        public void onListItemLongClick(MyTask task) {
+
         }
     };
 
@@ -71,9 +65,8 @@ public class TasksFragment extends Fragment {
         Bundle args = getArguments();
         if (args != null) {
             mList = (MyList) args.getSerializable(BUNDLE_LIST);
-            mTasks = MyApp.getInstance().getDatabase().taskDao().getTasks(mList.getId());
         } else {
-            mTasks = Collections.emptyList();
+            throw new IllegalArgumentException();
         }
     }
 
@@ -84,7 +77,7 @@ public class TasksFragment extends Fragment {
 
         ButterKnife.bind(this, view);
 
-        if (mList != null)  mTextViewTitle.setText(mList.getTitle());
+        mTextViewTitle.setText(mList.getTitle());
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(
@@ -92,17 +85,21 @@ public class TasksFragment extends Fragment {
                 layoutManager.getOrientation());
         mRecyclerViewTasks.addItemDecoration(dividerItemDecoration);
         mRecyclerViewTasks.setLayoutManager(layoutManager);
-        invalidateList();
+
+        mAdapter = new TasksListAdapter(mListener);
+
+        MyApp.getInstance()
+                .getDatabase()
+                .taskDao()
+                .getTasks(mList.getId())
+                .observe(this, tasks -> {
+                    mAdapter.submitList(tasks);
+                    String progress = parseListProgress(mList);
+                    mTextViewProgress.setText(progress);
+                });
+        mRecyclerViewTasks.setAdapter(mAdapter);
 
         return view;
-    }
-
-    public void invalidateList() {
-        String progress = parseListProgress(mList);
-        mTextViewProgress.setText(progress);
-        mTasks = MyApp.getInstance().getDatabase().taskDao().getTasks(mList.getId());
-        mAdapter = new TasksRecyclerViewAdapter(mTasks, mListener);
-        mRecyclerViewTasks.setAdapter(mAdapter);
     }
 
     private String parseListProgress(MyList list) {

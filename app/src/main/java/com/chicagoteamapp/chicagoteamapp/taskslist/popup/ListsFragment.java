@@ -1,7 +1,6 @@
 package com.chicagoteamapp.chicagoteamapp.taskslist.popup;
 
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -17,15 +16,15 @@ import android.widget.FrameLayout;
 import com.chicagoteamapp.chicagoteamapp.MyApp;
 import com.chicagoteamapp.chicagoteamapp.R;
 import com.chicagoteamapp.chicagoteamapp.model.MyList;
-import com.chicagoteamapp.chicagoteamapp.model.room.ListDao;
 import com.chicagoteamapp.chicagoteamapp.util.ViewUtil;
 
-import java.util.List;
 import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.chicagoteamapp.chicagoteamapp.taskslist.popup.ListsListAdapter.OnListInteractionListener;
 
 public class ListsFragment extends Fragment {
 
@@ -38,8 +37,19 @@ public class ListsFragment extends Fragment {
     @BindView(R.id.edit_text_new_list)
     EditText mEditTextNewList;
 
-    private ListsRecyclerViewAdapter mAdapter;
-    private OnDataChangeListener mListener;
+    private ListsListAdapter mAdapter;
+    private OnListInteractionListener mListener = new OnListInteractionListener() {
+
+        @Override
+        public void onListItemClick(MyList list) {
+
+        }
+
+        @Override
+        public void onListItemLongClick(MyList list) {
+
+        }
+    };
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -48,41 +58,30 @@ public class ListsFragment extends Fragment {
 
         ButterKnife.bind(this, view);
 
+        mAdapter  = new ListsListAdapter(mListener);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        invalidateList();
+
+        MyApp.getInstance()
+                .getDatabase()
+                .listDao()
+                .getAllLists()
+                .observe(this, lists -> {
+                    mAdapter.submitList(lists);
+                });
+
+        mRecyclerView.setAdapter(mAdapter);
 
         return view;
-    }
-
-    private void invalidateList() {
-        ListDao listDao = MyApp.getInstance().getDatabase().listDao();
-        List<MyList> lists = listDao.getAllLists();
-        mAdapter = new ListsRecyclerViewAdapter(lists, list -> {
-
-        });
-        mRecyclerView.setAdapter(mAdapter);
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnDataChangeListener) {
-            mListener = (OnDataChangeListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnDataChangeListener");
-        }
     }
 
     @OnClick(R.id.button_add_list)
     public void onButtonAddListClick() {
         MyList list = new MyList(mEditTextNewList.getText().toString());
         mEditTextNewList.getText().clear();
-        ListDao listDao = MyApp.getInstance().getDatabase().listDao();
-        listDao.insert(list);
-        invalidateList();
-        mListener.onListChanged();
-        onButtonCloseClick();
+        MyApp.getInstance()
+                .getDatabase()
+                .listDao()
+                .insert(list);
     }
 
     @OnClick(R.id.button_profile)
@@ -97,11 +96,5 @@ public class ListsFragment extends Fragment {
         FrameLayout layout =
                 Objects.requireNonNull(getActivity()).findViewById(R.id.frame_layout_dimming);
         ViewUtil.decreaseAlpha(layout);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
     }
 }

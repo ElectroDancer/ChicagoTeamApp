@@ -10,20 +10,15 @@ import android.widget.FrameLayout;
 
 import com.chicagoteamapp.chicagoteamapp.MyApp;
 import com.chicagoteamapp.chicagoteamapp.R;
-import com.chicagoteamapp.chicagoteamapp.model.MyList;
-import com.chicagoteamapp.chicagoteamapp.model.room.ListDao;
 import com.chicagoteamapp.chicagoteamapp.taskslist.popup.ListsFragment;
 import com.chicagoteamapp.chicagoteamapp.taskslist.popup.NewTaskFragment;
-import com.chicagoteamapp.chicagoteamapp.taskslist.popup.OnDataChangeListener;
 import com.chicagoteamapp.chicagoteamapp.util.ViewUtil;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class TasksActivity extends AppCompatActivity implements OnDataChangeListener {
+public class TasksActivity extends AppCompatActivity {
 
     @BindView(R.id.tab_layout_dots)
     TabLayout mTabDots;
@@ -54,7 +49,22 @@ public class TasksActivity extends AppCompatActivity implements OnDataChangeList
             ViewUtil.decreaseAlpha(mLayoutDimming);
         });
 
-        onListChanged();
+        mAdapter = new ListPagerAdapter(getSupportFragmentManager());
+        mPagerLists.setAdapter(mAdapter);
+        mTabDots.setupWithViewPager(mPagerLists, true);
+
+        MyApp.getInstance()
+                .getDatabase()
+                .listDao()
+                .getAllLists()
+                .observe(this, lists -> {
+                    mAdapter.setData(lists);
+                    if (lists == null || lists.isEmpty()) {
+                        mButtonAddTask.setVisibility(View.INVISIBLE);
+                    } else {
+                        mButtonAddTask.setVisibility(View.VISIBLE);
+                    }
+                });
     }
 
     @OnClick(R.id.button_add_task)
@@ -81,25 +91,5 @@ public class TasksActivity extends AppCompatActivity implements OnDataChangeList
         ViewUtil.slideUp(mLayoutPopup);
         mLayoutDimming.setVisibility(View.VISIBLE);
         ViewUtil.increaseAlpha(mLayoutDimming);
-    }
-
-    @Override
-    public void onTaskChanged() {
-        TasksFragment fragment = mAdapter.getRegisteredFragment(mPagerLists.getCurrentItem());
-        fragment.invalidateList();
-    }
-
-    @Override
-    public void onListChanged() {
-        ListDao listDao = MyApp.getInstance().getDatabase().listDao();
-        List<MyList> lists = listDao.getAllLists();
-        mAdapter = new ListPagerAdapter(getSupportFragmentManager(), lists);
-        mPagerLists.setAdapter(mAdapter);
-        mTabDots.setupWithViewPager(mPagerLists, true);
-        if (lists.isEmpty()) {
-            mButtonAddTask.setVisibility(View.INVISIBLE);
-        } else {
-            mButtonAddTask.setVisibility(View.VISIBLE);
-        }
     }
 }

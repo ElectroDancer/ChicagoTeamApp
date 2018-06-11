@@ -1,6 +1,8 @@
 package com.chicagoteamapp.chicagoteamapp.taskslist.popup;
 
 import android.support.annotation.NonNull;
+import android.support.v7.recyclerview.extensions.ListAdapter;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,19 +14,26 @@ import com.chicagoteamapp.chicagoteamapp.R;
 import com.chicagoteamapp.chicagoteamapp.model.MyList;
 import com.chicagoteamapp.chicagoteamapp.model.room.TaskDao;
 
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ListsRecyclerViewAdapter extends
-        RecyclerView.Adapter<ListsRecyclerViewAdapter.ViewHolder> {
+public class ListsListAdapter extends
+        ListAdapter<MyList, ListsListAdapter.ViewHolder> {
 
-    private List<MyList> myLists;
     private OnListInteractionListener mListener;
 
-    public ListsRecyclerViewAdapter(List<MyList> lists, OnListInteractionListener listener) {
-        myLists = lists;
+    public ListsListAdapter(OnListInteractionListener listener) {
+        super(new DiffUtil.ItemCallback<MyList>() {
+            @Override
+            public boolean areItemsTheSame(MyList oldItem, MyList newItem) {
+                return oldItem.getId() == newItem.getId();
+            }
+
+            @Override
+            public boolean areContentsTheSame(MyList oldItem, MyList newItem) {
+                return oldItem.equals(newItem);
+            }
+        });
         mListener = listener;
     }
 
@@ -38,15 +47,11 @@ public class ListsRecyclerViewAdapter extends
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bindData(myLists.get(position));
+        holder.bindData(getItem(position));
     }
 
-    @Override
-    public int getItemCount() {
-        return myLists.size();
-    }
-
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
+            View.OnLongClickListener {
 
         @BindView(R.id.text_list_title)
         TextView mTextViewTitle;
@@ -62,6 +67,7 @@ public class ListsRecyclerViewAdapter extends
             ButterKnife.bind(this, view);
             mView = view;
             mView.setOnClickListener(this);
+            mView.setOnLongClickListener(this);
         }
 
         public void bindData(MyList list) {
@@ -82,10 +88,18 @@ public class ListsRecyclerViewAdapter extends
             int tasksCompleted = taskDao.getCompletedTasksCount(list.getId());
             return tasksCompleted + " " + of + " " + count;
         }
+
+        @Override
+        public boolean onLongClick(View view) {
+            mListener.onListItemLongClick(mList);
+            return true;
+        }
     }
 
     interface OnListInteractionListener {
 
         void onListItemClick(MyList list);
+
+        void onListItemLongClick(MyList list);
     }
 }

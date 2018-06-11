@@ -1,5 +1,6 @@
 package com.chicagoteamapp.chicagoteamapp.model.room;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -23,7 +24,7 @@ public interface TaskDao {
     void delete(MyTask task);
 
     @Query("SELECT * FROM tasks WHERE id_list=:listId")
-    List<MyTask> getTasks(final long listId);
+    LiveData<List<MyTask>> getTasks(final long listId);
 
     @Query("SELECT COUNT(*) FROM tasks WHERE id_list=:listId")
     int geTasksCount(final long listId);

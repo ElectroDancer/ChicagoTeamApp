@@ -1,6 +1,8 @@
 package com.chicagoteamapp.chicagoteamapp.taskslist;
 
 import android.support.annotation.NonNull;
+import android.support.v7.recyclerview.extensions.ListAdapter;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,18 +15,25 @@ import com.chicagoteamapp.chicagoteamapp.R;
 import com.chicagoteamapp.chicagoteamapp.model.MyTask;
 import com.chicagoteamapp.chicagoteamapp.model.room.StepDao;
 
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecyclerViewAdapter.ViewHolder> {
+public class TasksListAdapter extends ListAdapter<MyTask, TasksListAdapter.ViewHolder> {
 
-    private List<MyTask> mTasks;
     private OnListInteractionListener mListener;
 
-    public TasksRecyclerViewAdapter(List<MyTask> tasks, OnListInteractionListener listener) {
-        mTasks = tasks;
+    protected TasksListAdapter(OnListInteractionListener listener) {
+        super(new DiffUtil.ItemCallback<MyTask>() {
+            @Override
+            public boolean areItemsTheSame(MyTask oldItem, MyTask newItem) {
+                return oldItem.getId() == newItem.getId();
+            }
+
+            @Override
+            public boolean areContentsTheSame(MyTask oldItem, MyTask newItem) {
+                return oldItem.equals(newItem);
+            }
+        });
         mListener = listener;
     }
 
@@ -37,16 +46,12 @@ class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecyclerViewAda
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        holder.bindData(mTasks.get(position));
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        holder.bindData(getItem(position));
     }
 
-    @Override
-    public int getItemCount() {
-        return mTasks.size();
-    }
-
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
+            View.OnLongClickListener {
 
         @BindView(R.id.check_task_complete)
         CheckBox mCheckBoxCompleted;
@@ -68,18 +73,22 @@ class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecyclerViewAda
             ButterKnife.bind(this, view);
             mView = view;
             mView.setOnClickListener(this);
+            mView.setOnLongClickListener(this);
         }
 
         public void bindData(MyTask task) {
             mTask = task;
             mTextViewTitle.setText(mTask.getTitle());
             mTextViewDate.setText(mTask.getDate());
+            mTextViewProgress.setText(parseTaskProgress(mTask));
             mCheckBoxCompleted.setChecked(mTask.isCompleted());
             mCheckBoxCompleted.setOnCheckedChangeListener((compoundButton, b) -> {
-                //mTask.setCompleted(mCompleted.isChecked());
-                //mListener.onTaskCompletionChange(mTask);
+                mTask.setCompleted(mCheckBoxCompleted.isChecked());
+                MyApp.getInstance()
+                        .getDatabase()
+                        .taskDao()
+                        .update(mTask);
             });
-            mTextViewProgress.setText(parseTaskProgress(mTask));
         }
 
         @Override
@@ -87,6 +96,12 @@ class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecyclerViewAda
             if (mListener != null) {
                 mListener.onListItemClick(mTask);
             }
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            mListener.onListItemLongClick(mTask);
+            return true;
         }
 
         private String parseTaskProgress(MyTask task) {
@@ -102,6 +117,6 @@ class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecyclerViewAda
 
         void onListItemClick(MyTask task);
 
-        void onTaskCompletionChange(MyTask task);
+        void onListItemLongClick(MyTask task);
     }
 }

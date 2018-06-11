@@ -1,5 +1,6 @@
 package com.chicagoteamapp.chicagoteamapp.model.room;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -23,7 +24,7 @@ public interface ImageDao {
     void delete(MyImage image);
 
     @Query("SELECT * FROM images WHERE id_task=:taskId")
-    List<MyImage> getImages(final long taskId);
+    LiveData<List<MyImage>> getImages(final long taskId);
 
     @Query("SELECT COUNT(*) FROM images WHERE id_task=:taskId")
     int geImagesCount(final long taskId);

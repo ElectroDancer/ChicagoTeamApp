@@ -1,5 +1,6 @@
 package com.chicagoteamapp.chicagoteamapp.model.room;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -23,7 +24,7 @@ public interface ListDao {
     void delete(MyList list);
 
     @Query("SELECT * FROM lists")
-    List<MyList> getAllLists();
+    LiveData<List<MyList>> getAllLists();
 
     @Query("SELECT COUNT(*) FROM lists")
     int getListsCount();

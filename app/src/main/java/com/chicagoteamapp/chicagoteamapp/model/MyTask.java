@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import com.chicagoteamapp.chicagoteamapp.util.DateUtil;
 
 import java.util.Date;
+import java.util.Objects;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
@@ -92,5 +93,24 @@ public class MyTask {
 
     public void setCompleted(boolean completed) {
         mCompleted = completed;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MyTask task = (MyTask) o;
+        return mId == task.mId &&
+                mListId == task.mListId &&
+                mCompleted == task.mCompleted &&
+                Objects.equals(mTitle, task.mTitle) &&
+                Objects.equals(mDescription, task.mDescription) &&
+                Objects.equals(mDate, task.mDate);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(mId, mListId, mTitle, mDescription, mDate, mCompleted);
     }
 }

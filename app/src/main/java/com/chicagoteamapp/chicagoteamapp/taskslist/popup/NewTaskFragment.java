@@ -1,6 +1,5 @@
 package com.chicagoteamapp.chicagoteamapp.taskslist.popup;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -41,7 +40,6 @@ public class NewTaskFragment extends Fragment {
     EditText mEditTextDescription;
 
     private long mListId;
-    private OnDataChangeListener mListener;
 
     public static NewTaskFragment newInstance(long listId) {
         Bundle args = new Bundle();
@@ -79,8 +77,6 @@ public class NewTaskFragment extends Fragment {
         task.setDate(mEditTextDate.getText().toString());
         task.setDescription(mEditTextDescription.getText().toString());
         taskDao.insert(task);
-        mListener.onTaskChanged();
-        onButtonCloseClick();
     }
 
     @OnClick(R.id.image_button_close)
@@ -90,22 +86,5 @@ public class NewTaskFragment extends Fragment {
         FrameLayout layout =
                 Objects.requireNonNull(getActivity()).findViewById(R.id.frame_layout_dimming);
         ViewUtil.decreaseAlpha(layout);
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnDataChangeListener) {
-            mListener = (OnDataChangeListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnDataChangeListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
     }
 }

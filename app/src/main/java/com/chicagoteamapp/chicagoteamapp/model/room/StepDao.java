@@ -1,5 +1,6 @@
 package com.chicagoteamapp.chicagoteamapp.model.room;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -23,7 +24,7 @@ public interface StepDao {
     void delete(MyStep step);
 
     @Query("SELECT * FROM steps WHERE id_task=:taskId")
-    List<MyStep> getSteps(final long taskId);
+    LiveData<List<MyStep>> getSteps(final long taskId);
 
     @Query("SELECT COUNT(*) FROM steps WHERE id_task=:taskId")
     int geStepsCount(final long taskId);
