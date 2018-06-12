@@ -5,13 +5,11 @@
     tools:context="com.chicagoteamapp.chicagoteamapp.Fragments.LoginOptionsFragment"
     android:orientation="vertical">
 
-
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         >
-
         <ImageButton
             android:id="@+id/button_return_to_launch_screen_fragment_login_options"
             android:layout_width="wrap_content"
@@ -19,8 +17,8 @@
             android:layout_marginStart="8dp"
             android:src="@drawable/ic_close"
             android:background="@color/White"
+            android:contentDescription="@string/button_exit_from_other_login_options"
             />
-
         <TextView
             android:id="@+id/title_login_options_fragment_login_options"
             style="@style/Header2Style"
@@ -31,42 +29,71 @@
     </FrameLayout>
 
     <FrameLayout
-        android:id="@+id/layout_email_fragment_login_options"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
         style="@style/ButtonEmailStyle"
-        android:clickable="true"
-        android:focusable="true"
+        android:layout_marginTop="120dp"
         >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/button_sign_in_fragment_login_options"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
+                android:visibility="invisible"
+                />
+            <Button
+                android:id="@+id/button_google_fragment_login_options"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/Black"
+                android:textSize="@dimen/smallTxtSize"
+                android:textAllCaps="false"
+                android:text="@string/email"
+                android:visibility="visible"
+                android:background="@drawable/shape_login_with_email"
+                />
+        </FrameLayout>
 
         <ImageView
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:src="@drawable/ic_email"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="8dp"
             android:padding="8dp"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/smallTxtSize"
-            android:layout_gravity="center"
-            android:textColor="@color/Black"
-            android:text="@string/email"
-            />
+            android:visibility="visible"
+            android:contentDescription="@string/ic_mail" />
     </FrameLayout>
 
     <FrameLayout
-        android:id="@+id/layout_facebook_fragment_login_options"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         style="@style/ButtonFacebookLoginStyle"
-        android:clickable="true"
-        android:focusable="true"
         >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <com.facebook.login.widget.LoginButton
+                android:id="@+id/login_button_fb_fragment_login_options"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                />
+            <Button
+                android:id="@+id/button_fb_fragment_login_options"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/smallTxtSize"
+                android:textAllCaps="false"
+                android:text="@string/action_facebook"
+                android:layout_gravity="center"
+                android:textColor="@color/White"
+                android:visibility="visible"
+                android:background="@drawable/shape_facebook_login"
+                />
+        </FrameLayout>
 
         <ImageView
             android:layout_width="40dp"
@@ -74,26 +101,31 @@
             android:src="@drawable/ic_facebook"
             android:padding="8dp"
             android:layout_gravity="center_vertical"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/smallTxtSize"
-            android:layout_gravity="center"
-            android:textColor="@color/White"
-            android:text="@string/action_facebook"
-            />
+            android:contentDescription="@string/ic_facebook" />
     </FrameLayout>
 
     <FrameLayout
-        android:id="@+id/layout_twitter_fragment_login_options"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         style="@style/ButtonTwitterLoginStyle"
-        android:clickable="true"
-        android:focusable="true"
         >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <Button
+                android:id="@+id/button_twitter_fragment_login_options"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/smallTxtSize"
+                android:textAllCaps="false"
+                android:text="@string/twitter"
+                android:layout_gravity="center"
+                android:textColor="@color/White"
+                android:visibility="visible"
+                android:background="@drawable/shape_twitter_login"
+                />
+        </FrameLayout>
 
         <ImageView
             android:layout_width="40dp"
@@ -101,16 +133,7 @@
             android:src="@drawable/ic_twitter"
             android:padding="8dp"
             android:layout_gravity="center_vertical"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/smallTxtSize"
-            android:layout_gravity="center"
-            android:textColor="@color/White"
-            android:text="@string/twitter"
-            />
+            android:contentDescription="@string/ic_twitter" />
     </FrameLayout>
 
     <TextView

@@ -1,4 +1,4 @@
-<resources>
+<resources >
     <string name="app_name">Chicago Team App</string>
     <string name="action_create_an_account">Create an account</string>
     <string name="action_more_ways_to_login">More ways to login</string>
@@ -20,4 +20,11 @@
     <string name="forgot_the_password">Forgot the password?</string>
     <string name="reset_password">Reset Password</string>
     <string name="forgot_password">Forgot password?</string>
+    <string name="facebook_login_protocol_scheme">add_late</string>
+    <string name="facebook_app_id">2133840813355457</string>
+    <string name="fb_login_protocol_scheme">fb2133840813355457</string>
+    <string name="ic_facebook">ic_facebook</string>
+    <string name="button_exit_from_other_login_options">button_exit_from_Other_login_options</string>
+    <string name="ic_mail">ic_mail</string>
+    <string name="ic_twitter">ic_twitter</string>
 </resources>

@@ -16,13 +16,20 @@ import android.widget.TextView;
 
 import com.chicagoteamapp.chicagoteamapp.R;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-public class LoginWithEmailFragment extends Fragment {
-    private static final String LOG_TAG = "My logs";
 
-    private ImageButton mImageButtonReturnToLaunchScreen;
-    private Button mButtonCreateAnAccount;
-    private TextView mTextForgotThePassword;
+public class LoginWithEmailFragment extends Fragment implements View.OnClickListener {
+    private static final String LOG_TAG = "LoginWithEmailFragment";
+    public static final String TAG = "LoginWithEmailFragmentTag";
+
+    private Fragment fragment;
+    private FragmentManager fm;
+    @BindView(R.id.button_return_to_launch_screen_fragment_login_with_email) ImageButton mImageButtonReturnToLaunchScreen;
+    @BindView(R.id.button_create_an_account_fragment_login_with_email) Button mButtonCreateAnAccount;
+    @BindView(R.id.text_forgot_the_password_fragment_login_with_email) TextView mTextForgotThePassword;
 
     @Nullable
     @Override
@@ -30,51 +37,55 @@ public class LoginWithEmailFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login_with_email, container, false);
-        mImageButtonReturnToLaunchScreen = view.findViewById(R.id.button_return_to_launch_screen_fragment_login_with_email);
-        mImageButtonReturnToLaunchScreen.setOnClickListener(this::onClick);
 
-        mButtonCreateAnAccount = view.findViewById(R.id.button_create_an_account_fragment_login_with_email);
-        mButtonCreateAnAccount.setOnClickListener(this::onClick);
+        ButterKnife.bind(this, view);
 
-        mTextForgotThePassword = view.findViewById(R.id.text_forgot_the_password_fragment_login_with_email);
-        mTextForgotThePassword.setOnClickListener(this::onClick);
-
-        Log.d(LOG_TAG, "LoginWithEmailFragment created views");
+        Log.d(LOG_TAG, "onCreateView");
         return view;
     }
 
-    public void onClick(View view) {
+    @OnClick({R.id.button_return_to_launch_screen_fragment_login_with_email,
+            R.id.button_create_an_account_fragment_login_with_email,
+            R.id.text_forgot_the_password_fragment_login_with_email})
+    void onClickButton(View view) {
         switch (view.getId()) {
             case R.id.button_return_to_launch_screen_fragment_login_with_email:
                 returnToLaunchScreen();
-                Log.d(LOG_TAG, "LoginWithEmailFragment, Return To Launch Screen is clicked");
+                Log.d(LOG_TAG, "Return To Launch Screen is clicked");
                 break;
 
             case R.id.button_create_an_account_fragment_login_with_email:
 
-                Log.d(LOG_TAG, "LoginWithEmailFragment, Create An Account is clicked");
+                Log.d(LOG_TAG, "Create An Account is clicked");
                 break;
 
             case R.id.text_forgot_the_password_fragment_login_with_email:
                 recoveryPasswordScreen();
-                Log.d(LOG_TAG, "LoginWithEmailFragment, Forgot The Password is clicked");
+                Log.d(LOG_TAG, "Forgot The Password is clicked");
                 break;
         }
     }
 
     private void recoveryPasswordScreen() {
-        Fragment fragment = new ForgotPasswordFragment();
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.activity_launch, fragment);
-        transaction.commit();
+        fragment = new ForgotPasswordFragment();
+        fm = getFragmentManager();
+        assert fm != null;
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.replace(R.id.activity_launch, fragment, fragment.getClass().getName())
+                .commit();
     }
 
     private void returnToLaunchScreen() {
-        Fragment fragment = new LoginOptionsFragment();
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.activity_launch, fragment);
-        transaction.commit();
+        fragment = new LoginOptionsFragment();
+        fm = getFragmentManager();
+        assert fm != null;
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.replace(R.id.activity_launch, fragment, fragment.getClass().getName())
+                .commit();
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 }

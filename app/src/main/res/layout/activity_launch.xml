@@ -1,24 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     >
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:ignore="UselessParent">
 
-<!--<fragment-->
-    <!--android:name="com.chicagoteamapp.chicagoteamapp.Fragments.SplashLoginFragment"-->
-    <!--android:id="@+id/activity_launch"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_alignParentBottom="true"-->
-    <!--/>-->
+    <fragment
+        android:name="com.chicagoteamapp.chicagoteamapp.Fragments.SplashLoginFragment"
+        android:id="@+id/activity_launch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+android:layout_alignParentBottom="true"
+        />
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true">
-    </FrameLayout>
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
 
+        android:layout_alignParentBottom="true"
+        />
 </RelativeLayout>
+
+</LinearLayout>

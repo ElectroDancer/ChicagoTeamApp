@@ -7,6 +7,8 @@
 
     <TextView
         style="@style/Header1Style"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
         android:layout_marginBottom="32dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
@@ -22,38 +24,66 @@
         style="@style/ButtonCreateAnAccountStyle"
         />
 
-    <Button
-        android:id="@+id/button_login_with_email_fragment_splash_login"
-        android:text="@string/action_login_with_email"
-        style="@style/ButtonEmailStyle"
-        />
-
     <FrameLayout
-        android:id="@+id/layout_facebook_fragment_splash_login"
+        style="@style/ButtonEmailStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        >
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/button_sign_in_fragment_splash_login"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:visibility="invisible"
+            />
+        <Button
+            android:id="@+id/button_google_fragment_splash_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/Black"
+            android:textSize="@dimen/smallTxtSize"
+            android:textAllCaps="false"
+            android:text="@string/action_login_with_email"
+            android:visibility="visible"
+            android:background="@drawable/shape_login_with_email"
+            />
+    </FrameLayout>
+
+    <FrameLayout
         style="@style/ButtonFacebookLoginStyle"
-        android:clickable="true"
-        android:focusable="true"
         >
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <com.facebook.login.widget.LoginButton
+                android:id="@+id/login_button_fb_fragment_splash_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                />
+            <Button
+                android:id="@+id/button_fb_fragment_splash_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/smallTxtSize"
+                android:textAllCaps="false"
+                android:text="@string/action_facebook"
+                android:layout_gravity="center"
+                android:textColor="@color/White"
+                android:visibility="visible"
+                android:background="@drawable/shape_facebook_login"
+                />
+        </FrameLayout>
+
         <ImageView
-            android:id="@+id/image_facebook_fragment_splash_login"
+                        android:contentDescription="@string/ic_facebook"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/ic_facebook"
             android:padding="8dp"
             android:layout_gravity="center_vertical"
-            />
-
-        <TextView
-            android:id="@+id/text_facebook_fragment_splash_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/smallTxtSize"
-            android:layout_gravity="center"
-            android:textColor="@color/White"
-            android:text="@string/action_facebook"
             />
     </FrameLayout>
 
@@ -65,8 +95,6 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:text="@string/action_more_ways_to_login"
-        android:layout_alignParentBottom="true"
-        />
+        android:text="@string/action_more_ways_to_login" />
 
 </LinearLayout>
