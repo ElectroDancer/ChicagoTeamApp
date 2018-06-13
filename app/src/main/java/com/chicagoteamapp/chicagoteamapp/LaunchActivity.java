@@ -3,6 +3,8 @@ package com.chicagoteamapp.chicagoteamapp;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
+import com.chicagoteamapp.chicagoteamapp.Fragments.SplashLoginFragment;
+
 
 public class LaunchActivity extends FragmentActivity {
 
@@ -11,5 +13,9 @@ public class LaunchActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch);
 
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.container, new SplashLoginFragment(), SplashLoginFragment.class.getName())
+                .commit();
     }
 }

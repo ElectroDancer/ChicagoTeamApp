@@ -75,7 +75,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
         FragmentManager fragmentManager = getFragmentManager();
         assert fragmentManager != null;
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.activity_launch, fragment);
+        transaction.replace(R.id.container, fragment);
         transaction.commit();
     }
 

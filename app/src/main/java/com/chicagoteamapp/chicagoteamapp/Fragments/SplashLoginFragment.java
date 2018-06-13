@@ -1,6 +1,5 @@
 package com.chicagoteamapp.chicagoteamapp.Fragments;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -204,7 +203,7 @@ public class SplashLoginFragment extends Fragment
         fm = getFragmentManager();
         assert fm != null;
         FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.activity_launch, fragment, fragment.getClass().getName())
+        transaction.replace(R.id.container, fragment, fragment.getClass().getName())
                 .commit();
     }
 
@@ -212,9 +211,10 @@ public class SplashLoginFragment extends Fragment
         fragment = new SignupFragment();
         fm = getFragmentManager();
         assert fm != null;
-        @SuppressLint("CommitTransaction")
+
         FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.activity_launch, fragment, fragment.getClass().getName())
+        transaction.replace(R.id.container, fragment, fragment.getClass().getName())
+                .addToBackStack(null)
                 .commit();
     }
 

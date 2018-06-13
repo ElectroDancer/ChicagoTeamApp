@@ -70,7 +70,7 @@ public class ForgotPasswordFragment extends Fragment implements View.OnClickList
         fm = getFragmentManager();
         assert fm != null;
         FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.activity_launch, fragment, fragment.getClass().getName())
+        transaction.replace(R.id.container, fragment, fragment.getClass().getName())
                 .commit();
     }
 
