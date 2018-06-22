@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +26,9 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
     private static final String LOG_TAG = "SignupFragment";
     public static final String TAG = "SignupFragmentTag";
 
-    @BindView(R.id.button_return_to_launch_screen_fragment_signup) ImageButton mImageButtonReturnToLaunchScreen;
+    private Fragment fragment;
+    private FragmentManager fm;
+    @BindView(R.id.button_return) ImageButton mImageButtonReturnToLaunchScreen;
     @BindView(R.id.edit_add_name_fragment_signup) EditText mEditTextAddName;
     @BindView(R.id.edit_add_email_fragment_signup) EditText mEditTextAddEmail;
     @BindView(R.id.editTextPassword_fragment_signup) EditText mEditTextAddPassword;
@@ -47,36 +48,24 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
         return view;
     }
 
-    @OnClick({R.id.button_return_to_launch_screen_fragment_signup,
-            R.id.button_create_an_account_fragment_signup})
-    void onClickButton(View view) {
-        switch (view.getId()) {
-            case R.id.button_return_to_launch_screen_fragment_signup:
-                returnToLaunchScreen();
-                Log.d(LOG_TAG, "Return To Launch Screen is clicked");
-                break;
-
-            case R.id.button_create_an_account_fragment_signup:
-                createAnAccount();
-                Log.d(LOG_TAG, "Create An Account is clicked");
-                break;
-        }
-    }
-
-    private void createAnAccount() {
+    @OnClick(R.id.button_create_an_account_fragment_signup)
+    void createAnAccount() {
         String name = getNameFromEditText();
         String email = getEmailFromEditText();
         String pass = getPasswordFromEditText();
         Account account = new Account(name, email, pass);
+        Log.d(LOG_TAG, "Create An Account is clicked");
     }
 
-    private void returnToLaunchScreen() {
-        Fragment fragment = new LoginOptionsFragment();
-        FragmentManager fragmentManager = getFragmentManager();
-        assert fragmentManager != null;
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.activity_launch, fragment);
-        transaction.commit();
+    @OnClick(R.id.button_return)
+    void returnToLoginOptionsScreen() {
+        fragment = new SplashLoginFragment();
+        assert getFragmentManager() != null;
+        FragmentManager fm = getFragmentManager();
+        Fragment f = fm.findFragmentById(R.id.main_container);
+        if(fm.getBackStackEntryCount() > 0)
+            fm.popBackStack();
+        Log.d(LOG_TAG, "Return To Launch Screen is clicked");
     }
 
     @NonNull

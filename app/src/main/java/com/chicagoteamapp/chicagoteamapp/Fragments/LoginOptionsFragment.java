@@ -17,47 +17,55 @@ import android.widget.ImageButton;
 
 import com.chicagoteamapp.chicagoteamapp.R;
 import com.facebook.CallbackManager;
-import com.facebook.FacebookSdk;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
 import com.facebook.Profile;
+import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.Twitter;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterConfig;
+import com.twitter.sdk.android.core.TwitterCore;
+import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.TwitterSession;
+import com.twitter.sdk.android.core.identity.TwitterLoginButton;
+import com.twitter.sdk.android.core.models.User;
 
-import java.util.Arrays;
-import java.util.List;
+import org.json.JSONException;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Response;
 
-public class LoginOptionsFragment extends Fragment
-        implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
+public class LoginOptionsFragment extends Fragment implements View.OnClickListener {
     private static final String LOG_TAG = "LoginOptionsFragment";
     public static final String TAG = "LoginOptionsFragmentTag";
 
     private GoogleApiClient mGoogleApiClient;
     private Fragment fragment;
+    private FragmentTransaction ft;
     private FragmentManager fm;
     private FirebaseAuth mAuth;
 
-//    private TwitterLoginButton mLoginButtonTwitter;
+    private TwitterLoginButton mLoginButtonTwitter;
 
-    @BindView(R.id.button_return_to_launch_screen_fragment_login_options) ImageButton mImageButtonReturnToLaunchScreen;
-    @BindView(R.id.button_google_fragment_login_options) Button mEmail;
-    @BindView(R.id.button_fb_fragment_login_options) Button mFacebook;
-    @BindView(R.id.login_button_fb_fragment_login_options) LoginButton mLoginButton;
+    @BindView(R.id.button_return) ImageButton mImageButtonReturnToLaunchScreen;
+    @BindView(R.id.button_login_with_email_fragment_login_options) Button mEmail;
+    @BindView(R.id.button_fb) Button mFacebook;
+    @BindView(R.id.button_facebook_login) LoginButton mLoginFacebook;
     @BindView(R.id.button_twitter_fragment_login_options) Button mTwitter;
     @BindView(R.id.button_create_an_account_fragment_login_options) Button mButtonCreateAnAccount;
-    @BindView(R.id.button_sign_in_fragment_login_options) SignInButton mSignInButton;
 
     private static final int RC_SIGN_IN = 430;
     private final static String G_PLUS_SCOPE =
@@ -85,181 +93,195 @@ public class LoginOptionsFragment extends Fragment
 
         ButterKnife.bind(this, view);
 
-        FacebookSdk.sdkInitialize(Objects.requireNonNull(getContext()).getApplicationContext());
-        mCallbackManager = CallbackManager.Factory.create();
-
-        List<String> permissionNeeds = Arrays.asList("user_photos", "email",
-                "user_birthday", "public_profile", "AccessToken");
-
-        // Initialize Firebase Auth
-        mAuth = FirebaseAuth.getInstance();
-
-        initializeGPlusSettings();
+//        initializeTwitter();
+        initializeFacebook();
 
         Log.d(LOG_TAG, "onCreateView");
         return view;
     }
 
-    private void initializeGPlusSettings(){
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
+    private void initializeTwitter() {
+        // Configure Twitter SDK
+        TwitterAuthConfig authConfig =  new TwitterAuthConfig(
+                getString(R.string.twitter_consumer_key),
+                getString(R.string.twitter_consumer_secret));
+
+        TwitterConfig twitterConfig = new TwitterConfig.Builder(Objects.requireNonNull(getContext()))
+                .twitterAuthConfig(authConfig)
                 .build();
-        mGoogleApiClient = new GoogleApiClient.Builder(Objects.requireNonNull(getContext()))
-                .enableAutoManage(Objects.requireNonNull(getActivity()), this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
-        mSignInButton.setSize(SignInButton.SIZE_STANDARD);
-        mSignInButton.setScopes(gso.getScopeArray());
+        Twitter.initialize(twitterConfig);
+
+        mLoginButtonTwitter.setCallback(new Callback<TwitterSession>() {
+            @Override
+            public void success(Result<TwitterSession> result) {
+                // Do something with result, which provides a TwitterSession for making API calls
+                Log.i("Session Username", String.valueOf(result.data.getUserId()));
+
+                login(result);
+
+            }
+
+            @Override
+            public void failure(TwitterException exception) {
+                // Do something on failure
+            }
+        });
+    }
+    //The login function accepting the result object
+    public void login(final Result<TwitterSession> result) {
+
+        //Creating a twitter session with result's data
+        TwitterSession session = result.data;
+
+        //This code will fetch the profile image URL
+        //Getting the account service of the user logged in
+        TwitterCore.getInstance().getApiClient(session).getAccountService().verifyCredentials(true, false, true).enqueue(new retrofit2.Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful()){
+                    //If it succeeds creating a User object from userResult.data
+                    User user = response.body();
+
+                    //Getting the profile image url
+                    String profileImage = user.profileImageUrl.replace("_normal", "");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+
+            }
+        });
     }
 
-    private void signIn() {
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
-    }
 
-    private void signOut() {
-        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                status -> updateUI(false));
-    }
-
-    private void handleGPlusSignInResult(GoogleSignInResult result) {
-        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
-        if (result.isSuccess()) {
-            GoogleSignInAccount acct = result.getSignInAccount();
-            //Fetch values
-            assert acct != null;
-            String personName = acct.getDisplayName();
-            String personPhotoUrl = Objects.requireNonNull(acct.getPhotoUrl()).toString();
-            String email = acct.getEmail();
-            String familyName = acct.getFamilyName();
-            Log.e(TAG, "Name: " + personName + ", email: " + email + ", Image: " + personPhotoUrl + ", Family Name: " + familyName);
-            updateUI(true);
-        } else {
-            updateUI(false);
-        }
-    }
 
     @Override
     public void onStart() {
         super.onStart();
-
         // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-//        updateUITwitter(currentUser);
-        
-        OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
-        if (opr.isDone()) {
-            Log.d(TAG, "Got cached sign-in");
-            GoogleSignInResult result = opr.get();
-            handleGPlusSignInResult(result);
-        } else {
-            opr.setResultCallback(this::handleGPlusSignInResult);
-        }
-    }
-
-    private void signOutTwitter() {
-        mAuth.signOut();
-//        TwitterCore.getInstance().getSessionManager().clearActiveSession();
-//        updateUITwitter(null);
-    }
-
-//    private void updateUITwitter(FirebaseUser currentUser) {
-//        hideProgressDialog();
-//        if (user != null) {
-//            mStatusTextView.setText(getString(R.string.twitter_status_fmt, user.getDisplayName()));
-//            mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
-//
-//            findViewById(R.id.button_twitter_login).setVisibility(View.GONE);
-//            findViewById(R.id.button_twitter_signout).setVisibility(View.VISIBLE);
-//        } else {
-//            mStatusTextView.setText(R.string.signed_out);
-//            mDetailTextView.setText(null);
-//
-//            findViewById(R.id.button_twitter_login).setVisibility(View.VISIBLE);
-//            findViewById(R.id.button_twitter_signout).setVisibility(View.GONE);
-//        }
-//    }
-
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        // An unresolvable error has occurred and Google APIs (including Sign-In) will not
-        // be available.
-        Log.d(TAG, "onConnectionFailed:" + connectionResult);
+//        FirebaseUser currentUser = mAuth.getCurrentUser();
     }
 
     @Override
-    public void onActivityResult(int requestCode, int responseCode, Intent data) {
-        if (requestCode == RC_SIGN_IN) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            handleGPlusSignInResult(result);
-        } else {
-            super.onActivityResult(requestCode, responseCode, data);
-            mCallbackManager.onActivityResult(requestCode, responseCode, data);
-        }
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Pass the activity result to the Twitter login button.
+        mLoginButtonTwitter.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void updateUI(boolean isSignedIn) {
-        if (isSignedIn) {
-            mSignInButton.setVisibility(View.GONE);
-        } else {
-            mSignInButton.setVisibility(View.VISIBLE);
+//    private void handleTwitterSession(TwitterSession session) {
+//        Log.d(TAG, "handleTwitterSession:" + session);
+//
+//        AuthCredential credential = TwitterAuthProvider.getCredential(
+//                session.getAuthToken().token,
+//                session.getAuthToken().secret);
+//
+//        mAuth.signInWithCredential(credential)
+//                .addOnCompleteListener(Objects.requireNonNull(getActivity()), task -> {
+//                    if (task.isSuccessful()) {
+//                        // Sign in success, update UI with the signed-in user's information
+//                        Log.d(TAG, "signInWithCredential:success");
+//                        FirebaseUser user = mAuth.getCurrentUser();
+//                    } else {
+//                        // If sign in fails, display a message to the user.
+//                        Log.w(TAG, "signInWithCredential:failure", task.getException());
+//                        Toast.makeText(getContext(), "Authentication failed.",
+//                                Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//    }
+
+    private void initializeFacebook() {
+        mCallbackManager = CallbackManager.Factory.create();
+        mLoginFacebook.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {@Override
+        public void onSuccess(LoginResult loginResult) {
+            System.out.println("onSuccess");
+            String accessToken = loginResult.getAccessToken()
+                    .getToken();
+            Log.i("accessToken", accessToken);
+            GraphRequest request = GraphRequest.newMeRequest(
+                    loginResult.getAccessToken(),
+                    (object, response) -> {
+                        Log.i("LoginActivity",
+                                response.toString());
+                        try {
+                            id = object.getString("id");
+                            try {
+                                URL profile_pic = new URL(
+                                        "http://graph.facebook.com/" + id + "/picture?type=large");
+                                Log.i("profile_pic",
+                                        profile_pic + "");
+
+                            } catch (MalformedURLException e) {
+                                e.printStackTrace();
+                            }
+                            Log.e("UserDate", String.valueOf(object));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    });
+            Bundle parameters = new Bundle();
+            parameters.putString("fields","id,name,email,gender, birthday");
+            request.setParameters(parameters);
+            request.executeAsync();
         }
+            @Override
+            public void onCancel() {
+                System.out.println("onCancel");
+            }
+            @Override
+            public void onError(FacebookException exception) {
+                System.out.println("onError");
+                Log.v("LoginActivity", exception.getCause().toString());
+            }
+        });
     }
 
-    @OnClick({R.id.button_return_to_launch_screen_fragment_login_options,
-            R.id.button_google_fragment_login_options,
-            R.id.button_fb_fragment_login_options,
-            R.id.button_twitter_fragment_login_options,
-            R.id.button_create_an_account_fragment_login_options})
-    void onClickButton(View view) {
-        switch (view.getId()) {
-            case R.id.button_return_to_launch_screen_fragment_login_options:
-                returnToLaunchScreen();
-                Log.d(LOG_TAG, "Return To Launch Screen is clicked");
-                break;
-
-            case R.id.button_google_fragment_login_options:
-                signIn();
-                Log.d(LOG_TAG, "Email is clicked");
-                break;
-
-            case R.id.button_fb_fragment_login_options:
-                mLoginButton.performClick();
-                Log.d(LOG_TAG, "Facebook is clicked");
-                break;
-
-            case R.id.button_twitter_fragment_login_options:
-
-                Log.d(LOG_TAG, "Twitter is clicked");
-                break;
-
-            case R.id.button_create_an_account_fragment_login_options:
-                callCreateAnAccountScreen();
-                Log.d(LOG_TAG, "Create An Account Screen is clicked");
-                break;
-        }
+    @OnClick(R.id.button_return)
+    void returnToLaunchScreen() {
+        fragment = new SplashLoginFragment();
+        FragmentManager fm = getFragmentManager();
+        assert fm != null;
+        Fragment f = fm.findFragmentById(R.id.main_container);
+        if(fm.getBackStackEntryCount() > 0)
+            fm.popBackStack();
+        Log.d(LOG_TAG, "Return To Launch Screen is clicked");
     }
 
-
-    private void callCreateAnAccountScreen() {
+    @OnClick(R.id.button_create_an_account_fragment_login_options)
+    void callCreateAnAccountScreen() {
         fragment = new SignupFragment();
-        fm = getFragmentManager();
-        assert fm != null;
-        FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.activity_launch, fragment, fragment.getClass().getName())
+        assert getFragmentManager() != null;
+        ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.main_container, fragment)
+                .addToBackStack("SignupFragment")
+                .commit();
+        Log.d(LOG_TAG, "Create an account");
+    }
+
+    @OnClick(R.id.button_login_with_email_fragment_login_options)
+    void loginWithEmail() {
+        fragment = new LoginWithEmailFragment();
+        assert getFragmentManager() != null;
+        ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.main_container, fragment, fragment.getClass().getName())
+                .addToBackStack("LoginWithEmailFragment")
                 .commit();
     }
 
-    private void returnToLaunchScreen() {
-        fragment = new LoginOptionsFragment();
-        fm = getFragmentManager();
-        assert fm != null;
-        FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.activity_launch, fragment, fragment.getClass().getName())
-                .commit();
+
+
+    @OnClick(R.id.button_fb)
+    void loginFacebook() {
+        mLoginFacebook.performClick();
+        Log.d(LOG_TAG, "loginFacebook");
     }
 
     @Override
     public void onClick(View v) {
 
     }
+
 }

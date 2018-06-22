@@ -1,13 +1,9 @@
 package com.chicagoteamapp.chicagoteamapp.Fragments;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,60 +12,49 @@ import android.widget.Button;
 
 import com.chicagoteamapp.chicagoteamapp.R;
 import com.facebook.CallbackManager;
-import com.facebook.FacebookSdk;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.OptionalPendingResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import org.json.JSONException;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class SplashLoginFragment extends Fragment
-        implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
+public class SplashLoginFragment extends Fragment implements View.OnClickListener {
     final String LOG_TAG = "SplashLoginFragment";
     public static final String TAG = "SplashLoginFragmentTag";
     private static final int RC_SIGN_IN = 430;
     private GoogleApiClient mGoogleApiClient;
-    private Fragment fragment;
-    private FragmentManager fm;
-    @BindView(R.id.button_create_an_account_fragment_splash_login)
-    Button mCreateAnAccount;
-    @BindView(R.id.button_more_ways_to_login_fragment_splash_login)
-    Button mMoreWaysToLogin;
-    @BindView(R.id.button_fb_fragment_splash_login)
-    Button mFacebook;
-    @BindView(R.id.button_google_fragment_splash_login)
-    Button mGoogle;
-    @BindView(R.id.button_sign_in_fragment_splash_login)
-    SignInButton mSignInButton;
-    @BindView(R.id.login_button_fb_fragment_splash_login)
-    LoginButton mLoginButton;
+    private FirebaseAuth mAuth;
+    FirebaseUser currentUser;
 
-    private final static String G_PLUS_SCOPE =
-            "oauth2:https://www.googleapis.com/auth/plus.me";
-    private final static String USERINFO_SCOPE =
-            "https://www.googleapis.com/auth/userinfo.profile";
-    private final static String EMAIL_SCOPE =
-            "https://www.googleapis.com/auth/userinfo.email";
-    private final static String SCOPES = G_PLUS_SCOPE + " " + USERINFO_SCOPE + " " + EMAIL_SCOPE;
-    public String id, name, email, gender, birthday;
+    private Fragment fragment;
+    private android.support.v4.app.FragmentTransaction ft;
+    @BindView(R.id.button_create_an_account_fragment_splash_login) Button mCreateAnAccount;
+    @BindView(R.id.button_more_ways_to_login_fragment_splash_login) Button mMoreWaysToLogin;
+    @BindView(R.id.button_fb) Button mFacebook;
+    @BindView(R.id.button_login_with_email_fragment_splash_login) Button mEmail;
+    @BindView(R.id.button_facebook_login) LoginButton mLoginFacebook;
+
     CallbackManager mCallbackManager;
+    public String id, name, email, gender, birthday;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
     }
 
     @Nullable
@@ -81,145 +66,95 @@ public class SplashLoginFragment extends Fragment
 
         ButterKnife.bind(this, view);
 
-        FacebookSdk.sdkInitialize(Objects.requireNonNull(getContext()).getApplicationContext());
-        mCallbackManager = CallbackManager.Factory.create();
-
-        List<String> permissionNeeds = Arrays.asList("user_photos", "email",
-                "user_birthday", "public_profile", "AccessToken");
-
-        initializeGPlusSettings();
+        initializeFacebook();
         Log.d(LOG_TAG, "onCreateView");
         return view;
     }
 
-    @OnClick({R.id.button_create_an_account_fragment_splash_login,
-            R.id.button_google_fragment_splash_login,
-            R.id.button_fb_fragment_splash_login,
-            R.id.button_more_ways_to_login_fragment_splash_login})
-    void onClickButton(View view) {
-        switch (view.getId()) {
-            case R.id.button_create_an_account_fragment_splash_login:
-                createAnAccount();
-                Log.d(LOG_TAG, "Create An Account is clicked");
-                break;
+    private void initializeFacebook() {
+        mCallbackManager = CallbackManager.Factory.create();
+        mLoginFacebook.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {@Override
+        public void onSuccess(LoginResult loginResult) {
+            System.out.println("onSuccess");
+            String accessToken = loginResult.getAccessToken()
+                    .getToken();
+            Log.i("accessToken", accessToken);
+            GraphRequest request = GraphRequest.newMeRequest(
+                    loginResult.getAccessToken(),
+                    (object, response) -> {
+                        Log.i("LoginActivity",
+                                response.toString());
+                        try {
+                            id = object.getString("id");
+                            try {
+                                URL profile_pic = new URL(
+                                        "http://graph.facebook.com/" + id + "/picture?type=large");
+                                Log.i("profile_pic",
+                                        profile_pic + "");
 
-            case R.id.button_google_fragment_splash_login:
-                signIn();
-                Log.d(LOG_TAG, "Login With Email is clicked");
-                break;
-
-            case R.id.button_fb_fragment_splash_login:
-                mLoginButton.performClick();
-                Log.d(LOG_TAG, "Facebook is clicked");
-                break;
-
-            case R.id.button_more_ways_to_login_fragment_splash_login:
-                moreWaysToLogin();
-                Log.d(LOG_TAG, "More Ways To Login is clicked");
-                break;
+                            } catch (MalformedURLException e) {
+                                e.printStackTrace();
+                            }
+                            Log.e("UserDate", String.valueOf(object));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    });
+            Bundle parameters = new Bundle();
+            parameters.putString("fields","id,name,email,gender, birthday");
+            request.setParameters(parameters);
+            request.executeAsync();
         }
-    }
-
-    private void initializeGPlusSettings(){
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-        mGoogleApiClient = new GoogleApiClient.Builder(Objects.requireNonNull(getContext()))
-                .enableAutoManage(Objects.requireNonNull(getActivity()), this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
-        mSignInButton.setSize(SignInButton.SIZE_STANDARD);
-        mSignInButton.setScopes(gso.getScopeArray());
-    }
-
-    private void signIn() {
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
-    }
-
-    private void signOut() {
-        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                status -> updateUI(false));
-    }
-
-    private void handleGPlusSignInResult(GoogleSignInResult result) {
-        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
-        if (result.isSuccess()) {
-            GoogleSignInAccount acct = result.getSignInAccount();
-            //Fetch values
-            assert acct != null;
-            String personName = acct.getDisplayName();
-            String personPhotoUrl = Objects.requireNonNull(acct.getPhotoUrl()).toString();
-            String email = acct.getEmail();
-            String familyName = acct.getFamilyName();
-            Log.e(TAG, "Name: " + personName + ", email: " + email + ", Image: " + personPhotoUrl + ", Family Name: " + familyName);
-            updateUI(true);
-        } else {
-            updateUI(false);
-        }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
-        if (opr.isDone()) {
-            Log.d(TAG, "Got cached sign-in");
-            GoogleSignInResult result = opr.get();
-            handleGPlusSignInResult(result);
-        } else {
-            opr.setResultCallback(this::handleGPlusSignInResult);
-        }
-    }
-
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        // An unresolvable error has occurred and Google APIs (including Sign-In) will not
-        // be available.
-        Log.d(TAG, "onConnectionFailed:" + connectionResult);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int responseCode,
-                                 Intent data) {
-        if (requestCode == RC_SIGN_IN) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            handleGPlusSignInResult(result);
-        } else {
-            super.onActivityResult(requestCode, responseCode, data);
-            mCallbackManager.onActivityResult(requestCode, responseCode, data);
-        }
-    }
-
-    private void updateUI(boolean isSignedIn) {
-        if (isSignedIn) {
-            mSignInButton.setVisibility(View.GONE);
-        } else {
-            mSignInButton.setVisibility(View.VISIBLE);
-        }
+            @Override
+            public void onCancel() {
+                System.out.println("onCancel");
+            }
+            @Override
+            public void onError(FacebookException exception) {
+                System.out.println("onError");
+                Log.v("LoginActivity", exception.getCause().toString());
+            }
+        });
     }
 
 
-    private void moreWaysToLogin() {
-        fragment = new LoginOptionsFragment();
-        fm = getFragmentManager();
-        assert fm != null;
-        FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.activity_launch, fragment, fragment.getClass().getName())
-                .commit();
-    }
-
-    private void createAnAccount() {
+    @OnClick(R.id.button_create_an_account_fragment_splash_login)
+    void createAnAccount() {
         fragment = new SignupFragment();
-        fm = getFragmentManager();
-        assert fm != null;
-        @SuppressLint("CommitTransaction")
-        FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.activity_launch, fragment, fragment.getClass().getName())
+        assert getFragmentManager() != null;
+        ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.main_container, fragment)
+                .addToBackStack("SignupFragment")
                 .commit();
+    }
+
+    @OnClick(R.id.button_login_with_email_fragment_splash_login)
+    void loginWithEmail() {
+        fragment = new LoginWithEmailFragment();
+        assert getFragmentManager() != null;
+        ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.main_container, fragment, fragment.getClass().getName())
+                .addToBackStack("LoginWithEmailFragment")
+                .commit();
+    }
+
+    @OnClick(R.id.button_more_ways_to_login_fragment_splash_login)
+    void moreWaysToLogin() {
+        fragment = new LoginOptionsFragment();
+        assert getFragmentManager() != null;
+        ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.main_container, fragment, fragment.getClass().getName())
+                .addToBackStack("LoginOptionsFragment")
+                .commit();
+    }
+
+    @OnClick(R.id.button_fb)
+    void loginFacebook() {
+        mLoginFacebook.performClick();
+        Log.d(LOG_TAG, "loginFacebook");
     }
 
     @Override
     public void onClick(View v) {
-
     }
 }

@@ -3,7 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.chicagoteamapp.chicagoteamapp.Fragments.LoginOptionsFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/fragment_login_options"
+    >
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -11,7 +13,7 @@
         android:layout_marginTop="8dp"
         >
         <ImageButton
-            android:id="@+id/button_return_to_launch_screen_fragment_login_options"
+            android:id="@+id/button_return"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -37,15 +39,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             >
-            <com.google.android.gms.common.SignInButton
-                android:id="@+id/button_sign_in_fragment_login_options"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="0dp"
-                android:visibility="invisible"
-                />
+
             <Button
-                android:id="@+id/button_google_fragment_login_options"
+                android:id="@+id/button_login_with_email_fragment_login_options"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/Black"
@@ -76,13 +72,13 @@
             android:layout_height="match_parent"
             >
             <com.facebook.login.widget.LoginButton
-                android:id="@+id/login_button_fb_fragment_login_options"
+                android:id="@+id/button_facebook_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 />
             <Button
-                android:id="@+id/button_fb_fragment_login_options"
+                android:id="@+id/button_fb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/smallTxtSize"

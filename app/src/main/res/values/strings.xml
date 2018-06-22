@@ -27,4 +27,6 @@
     <string name="button_exit_from_other_login_options">button_exit_from_Other_login_options</string>
     <string name="ic_mail">ic_mail</string>
     <string name="ic_twitter">ic_twitter</string>
+    <string name="twitter_consumer_key">dzjwzlDkzx768O9ugHbLWDZOU</string>
+    <string name="twitter_consumer_secret">jk6gvfHSAM41oHpWmjlqgyMFYwGxtucJAJZ8YtN5H3U882wfXK</string>
 </resources>

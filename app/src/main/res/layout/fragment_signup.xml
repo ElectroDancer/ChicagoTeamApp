@@ -7,7 +7,7 @@
     tools:context="com.chicagoteamapp.chicagoteamapp.Fragments.SignupFragment">
 
     <ImageButton
-        android:id="@+id/button_return_to_launch_screen_fragment_signup"
+        android:id="@+id/button_return"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

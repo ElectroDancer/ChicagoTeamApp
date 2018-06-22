@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +27,7 @@ public class ForgotPasswordFragment extends Fragment implements View.OnClickList
 
     private Fragment fragment;
     private FragmentManager fm;
-    @BindView(R.id.button_return_to_launch_screen_fragment_forgot_password) ImageButton mImageButtonReturnToLaunchScreen;
+    @BindView(R.id.button_return) ImageButton mImageButtonReturnToLaunchScreen;
     @BindView(R.id.edit_add_email_if_forgot_password_fragment_forgot_password) EditText mEditTextAddEmail;
     @BindView(R.id.button_reset_password_fragment_forgot_password) Button mButtonCreateAnAccount;
 
@@ -45,33 +44,31 @@ public class ForgotPasswordFragment extends Fragment implements View.OnClickList
         return view;
     }
 
-    @OnClick({R.id.button_return_to_launch_screen_fragment_forgot_password,
-            R.id.button_reset_password_fragment_forgot_password})
-    void onClickButton(View view) {
-        switch (view.getId()) {
-            case R.id.button_return_to_launch_screen_fragment_forgot_password:
-                returnToLoginOptionsScreen();
-                Log.d(LOG_TAG, "Return To Launch Screen is clicked");
-                break;
+    @OnClick(R.id.button_reset_password_fragment_forgot_password)
+    void resetPassword() {
 
-            case R.id.button_reset_password_fragment_forgot_password:
-                resetPassword();
-                Log.d(LOG_TAG, "Reset Password is clicked");
-                break;
-        }
+        Log.d(LOG_TAG, "Reset Password is clicked");
     }
 
-    private void resetPassword() {
-
-    }
-
-    private void returnToLoginOptionsScreen() {
-        fragment = new LoginOptionsFragment();
-        fm = getFragmentManager();
-        assert fm != null;
-        FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.activity_launch, fragment, fragment.getClass().getName())
-                .commit();
+    @OnClick(R.id.button_return)
+    void returnToLoginOptionsScreen() {
+        fragment = new SplashLoginFragment();
+        assert getFragmentManager() != null;
+        FragmentManager fm = getFragmentManager();
+//        FragmentTransaction ft = getFragmentManager().beginTransaction();
+//        getFragmentManager().popBackStack();
+//        ft.replace(R.id.container, new SplashLoginFragment())
+//                .addToBackStack(null)
+//                .commit();
+//        fm.popBackStack("LoginWithEmailFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        fm.popBackStack();
+//        if(fm.getBackStackEntryCount() > 0){
+//            fm.popBackStack();
+//        }
+//        else{
+//            onDestroy();
+//        }
+        Log.d(LOG_TAG, "Return To Launch Screen is clicked");
     }
 
     @Override
