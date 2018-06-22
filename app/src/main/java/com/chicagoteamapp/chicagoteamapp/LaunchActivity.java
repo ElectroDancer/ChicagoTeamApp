@@ -2,7 +2,6 @@ package com.chicagoteamapp.chicagoteamapp;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
 
 import com.chicagoteamapp.chicagoteamapp.Fragments.SplashLoginFragment;
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,12 +19,11 @@ public class LaunchActivity extends FragmentActivity {
 
 
         if (savedInstanceState == null) {
-            SplashLoginFragment splashLoginFragment = new SplashLoginFragment();
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.add(R.id.main_container, splashLoginFragment)
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.main_container, new SplashLoginFragment())
                     .commit();
         }
-
 
 //        FirebaseOptions options = new FirebaseOptions.Builder()
 //                .setApplicationId("2133840813355457") // Required for Analytics.
