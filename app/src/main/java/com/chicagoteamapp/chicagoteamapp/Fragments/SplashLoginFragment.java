@@ -18,6 +18,7 @@ import com.facebook.GraphRequest;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -54,7 +55,9 @@ public class SplashLoginFragment extends Fragment implements View.OnClickListene
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+//                FirebaseApp.initializeApp(getContext());
+//        mAuth = FirebaseAuth.getInstance();
+//        currentUser = mAuth.getCurrentUser();
     }
 
     @Nullable
@@ -65,6 +68,10 @@ public class SplashLoginFragment extends Fragment implements View.OnClickListene
         View view = inflater.inflate(R.layout.fragment_splash_login, container, false);
 
         ButterKnife.bind(this, view);
+
+                        FirebaseApp.initializeApp(getContext());
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
 
         initializeFacebook();
         Log.d(LOG_TAG, "onCreateView");
