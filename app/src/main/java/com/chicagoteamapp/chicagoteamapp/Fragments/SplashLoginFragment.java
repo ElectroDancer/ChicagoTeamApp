@@ -55,9 +55,9 @@ public class SplashLoginFragment extends Fragment implements View.OnClickListene
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//                FirebaseApp.initializeApp(getContext());
-//        mAuth = FirebaseAuth.getInstance();
-//        currentUser = mAuth.getCurrentUser();
+        FirebaseApp.initializeApp(getContext());
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
     }
 
     @Nullable
