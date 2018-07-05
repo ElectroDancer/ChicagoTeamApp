@@ -1,44 +1,43 @@
 package com.chicagoteamapp.chicagoteamapp.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
+import com.chicagoteamapp.chicagoteamapp.BackableFragment;
 import com.chicagoteamapp.chicagoteamapp.R;
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.GraphRequest;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import org.json.JSONException;
-
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class SplashLoginFragment extends Fragment implements View.OnClickListener {
-    final String LOG_TAG = "SplashLoginFragment";
-    public static final String TAG = "SplashLoginFragmentTag";
-    private static final int RC_SIGN_IN = 430;
-    private GoogleApiClient mGoogleApiClient;
+public class SplashLoginFragment extends BackableFragment implements View.OnClickListener {
+    private static final String TAG  = "SplashLoginFragment";
     private FirebaseAuth mAuth;
-    FirebaseUser currentUser;
+    private FirebaseUser mUser;
 
     private Fragment fragment;
     private android.support.v4.app.FragmentTransaction ft;
@@ -49,15 +48,14 @@ public class SplashLoginFragment extends Fragment implements View.OnClickListene
     @BindView(R.id.button_facebook_login) LoginButton mLoginFacebook;
 
     CallbackManager mCallbackManager;
-    public String id, name, email, gender, birthday;
+    public String id, name, email;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        FirebaseApp.initializeApp(getContext());
+        FirebaseApp.initializeApp(getActivity());
         mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
+        mUser = mAuth.getCurrentUser();
     }
 
     @Nullable
@@ -69,61 +67,67 @@ public class SplashLoginFragment extends Fragment implements View.OnClickListene
 
         ButterKnife.bind(this, view);
 
-                        FirebaseApp.initializeApp(getContext());
-        mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
+        FirebaseApp.initializeApp(getContext());
+        FirebaseAuth.getInstance();
+        initializeFirebaseFacebook();
 
-        initializeFacebook();
-        Log.d(LOG_TAG, "onCreateView");
+        Log.d(TAG, "onCreateView");
         return view;
     }
 
-    private void initializeFacebook() {
+    private void initializeFirebaseFacebook() {
         mCallbackManager = CallbackManager.Factory.create();
-        mLoginFacebook.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {@Override
-        public void onSuccess(LoginResult loginResult) {
-            System.out.println("onSuccess");
-            String accessToken = loginResult.getAccessToken()
-                    .getToken();
-            Log.i("accessToken", accessToken);
-            GraphRequest request = GraphRequest.newMeRequest(
-                    loginResult.getAccessToken(),
-                    (object, response) -> {
-                        Log.i("LoginActivity",
-                                response.toString());
-                        try {
-                            id = object.getString("id");
-                            try {
-                                URL profile_pic = new URL(
-                                        "http://graph.facebook.com/" + id + "/picture?type=large");
-                                Log.i("profile_pic",
-                                        profile_pic + "");
-
-                            } catch (MalformedURLException e) {
-                                e.printStackTrace();
-                            }
-                            Log.e("UserDate", String.valueOf(object));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    });
-            Bundle parameters = new Bundle();
-            parameters.putString("fields","id,name,email,gender, birthday");
-            request.setParameters(parameters);
-            request.executeAsync();
-        }
+        mLoginFacebook.setReadPermissions("email", "public_profile");
+        mLoginFacebook.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
-            public void onCancel() {
-                System.out.println("onCancel");
+            public void onSuccess(LoginResult loginResult) {
+                Log.d(TAG, "facebook:onSuccess:" + loginResult);
+                handleFacebookAccessToken(loginResult.getAccessToken());
             }
             @Override
-            public void onError(FacebookException exception) {
-                System.out.println("onError");
-                Log.v("LoginActivity", exception.getCause().toString());
+            public void onCancel() {
+                Log.d(TAG, "facebook:onCancel");
+            }
+            @Override
+            public void onError(FacebookException error) {
+                Log.d(TAG, "facebook:onError", error);
             }
         });
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        mUser = mAuth.getCurrentUser();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Pass the activity result back to the Facebook SDK
+        mCallbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void handleFacebookAccessToken(AccessToken token) {
+        Log.d(TAG, "handleFacebookAccessToken:" + token);
+
+        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(Objects.requireNonNull(getActivity()), task -> {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d(TAG, "signInWithCredential:success");
+                        FirebaseUser user = mAuth.getCurrentUser();
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w(TAG, "signInWithCredential:failure", task.getException());
+                        Toast.makeText(getActivity(), "Authentication failed.",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
 
     @OnClick(R.id.button_create_an_account_fragment_splash_login)
     void createAnAccount() {
@@ -158,10 +162,26 @@ public class SplashLoginFragment extends Fragment implements View.OnClickListene
     @OnClick(R.id.button_fb)
     void loginFacebook() {
         mLoginFacebook.performClick();
-        Log.d(LOG_TAG, "loginFacebook");
+        Log.d(TAG, "loginFacebook");
     }
 
     @Override
     public void onClick(View v) {
+    }
+
+    @Override
+    public void onBackButtonPressed() {
+        AlertDialog.Builder quitDialog = new AlertDialog.Builder(
+                Objects.requireNonNull(getContext()));
+        quitDialog.setTitle("Exit: are you sure?");
+
+        quitDialog.setPositiveButton("Yes!", (dialog, which) -> {
+            Objects.requireNonNull(getActivity()).onBackPressed();
+        });
+
+        quitDialog.setNegativeButton("No", (dialog, which) -> {
+        });
+
+        quitDialog.show();
     }
 }

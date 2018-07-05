@@ -21,12 +21,16 @@
     <string name="reset_password">Reset Password</string>
     <string name="forgot_password">Forgot password?</string>
     <string name="facebook_login_protocol_scheme">add_late</string>
-    <string name="facebook_app_id">2133840813355457</string>
-    <string name="fb_login_protocol_scheme">fb2133840813355457</string>
+    <string name="facebook_app_id">425365211263675</string>
+    <string name="fb_login_protocol_scheme">fb425365211263675</string>
     <string name="ic_facebook">ic_facebook</string>
     <string name="button_exit_from_other_login_options">button_exit_from_Other_login_options</string>
     <string name="ic_mail">ic_mail</string>
     <string name="ic_twitter">ic_twitter</string>
     <string name="twitter_consumer_key">dzjwzlDkzx768O9ugHbLWDZOU</string>
     <string name="twitter_consumer_secret">jk6gvfHSAM41oHpWmjlqgyMFYwGxtucJAJZ8YtN5H3U882wfXK</string>
+    <string name="Login">Login</string>
+    <string name="password">Password</string>
+    <string name="name">Name</string>
+    <string name="error">Type at least 4 symbols</string>
 </resources>

@@ -1,9 +1,7 @@
 package com.chicagoteamapp.chicagoteamapp;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
 import com.chicagoteamapp.chicagoteamapp.Fragments.SplashLoginFragment;
@@ -19,8 +17,7 @@ import java.util.Objects;
 
 
 public class LaunchActivity extends FragmentActivity {
-    private FirebaseAuth mAuth;
-    private FirebaseUser currentUser;
+    public FirebaseUser mUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,23 +33,13 @@ public class LaunchActivity extends FragmentActivity {
         Twitter.initialize(config);
 
         FirebaseApp.initializeApp(this);
-        mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
+        mUser = FirebaseAuth.getInstance().getCurrentUser();
 
             getSupportFragmentManager()
                     .beginTransaction()
                     .add(R.id.main_container, new SplashLoginFragment())
                     .commit();
-        setContentView(R.layout.activity_launch);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        FragmentManager fragment = getSupportFragmentManager();
-        if (fragment != null) {
-            fragment.findFragmentById(R.id.main_container).onActivityResult(requestCode, resultCode, data);
+            setContentView(R.layout.activity_launch);
         }
-        else Log.d("Twitter", "fragment is null");
-    }
+
 }

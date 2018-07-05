@@ -1,5 +1,7 @@
 package com.chicagoteamapp.chicagoteamapp.Fragments;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,11 +12,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.chicagoteamapp.chicagoteamapp.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,51 +34,128 @@ import butterknife.OnClick;
 
 
 public class LoginWithEmailFragment extends Fragment implements View.OnClickListener {
-    private static final String LOG_TAG = "LoginWithEmailFragment";
-    public static final String TAG = "LoginWithEmailFragmentTag";
+    private static final String TAG = "LoginWithEmailFragment";
 
-    private Fragment fragment;
-    private FragmentManager fm;
-    @BindView(R.id.button_return) ImageButton mImageButtonReturnToLaunchScreen;
-    @BindView(R.id.button_create_an_account_fragment_login_with_email) Button mButtonCreateAnAccount;
-    @BindView(R.id.text_forgot_the_password_fragment_login_with_email) TextView mTextForgotThePassword;
+    private FirebaseAuth mAuth;
+    private FirebaseUser mUser;
+    @BindView(R.id.button_return)
+    ImageButton mImageButtonReturnToLaunchScreen;
+    @BindView(R.id.edit_add_email_fragment_login_with_email)
+    EditText mEditTextAddEmail;
+    @BindView(R.id.edit_text_password_fragment_login_with_email)
+    EditText mEditTextAddPassword;
+    @BindView(R.id.button_login_fragment_login_with_email)
+    Button mButtonLogin;
+    @BindView(R.id.text_forgot_the_password_fragment_login_with_email)
+    TextView mTextForgotThePassword;
+
+    private String email = null;
+    private String password = null;
+    private static final String EMAIL_PATTERN = "^[a-zA-Z0-9#_~!$&'()*+,;=:.\"(),:;<>@\\[\\]\\\\]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*$";
+    private Pattern pattern = Pattern.compile(EMAIL_PATTERN);
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_login_with_email, container, false);
+        View view = inflater.inflate(R.layout.fragment_login_with_email,
+                container, false);
 
         ButterKnife.bind(this, view);
-
-        Log.d(LOG_TAG, "onCreateView");
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+        Log.d(TAG, "onCreateView");
         return view;
+    }
+
+    @SuppressLint("SetTextI18n")
+    @OnClick(R.id.button_login_fragment_login_with_email)
+     void signIn() {
+        hideKeyboard();
+        email = mEditTextAddEmail.getText().toString().trim();
+        password = mEditTextAddPassword.getText().toString().trim();
+
+        Log.d(TAG, "signIn:" + email);
+        if (!validateForm()) {
+            return;
+        }
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(Objects.requireNonNull(getActivity()), task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(getContext(), "Welcome " + mUser.getEmail(),
+                                Toast.LENGTH_LONG).show();
+                        Log.d(TAG, "signInWithEmail:success");
+                        FirebaseUser user = mAuth.getCurrentUser();
+                    } else {
+                        if (Objects.equals(task.getException(), FirebaseAuthUserCollisionException.class)) {
+                            Toast.makeText(getContext(), "The email address is already in use by another account",
+                                    Toast.LENGTH_SHORT).show();
+                            Log.w(TAG, "The email address is already in use by another account ", task.getException());
+                        }
+                        Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                        Toast.makeText(getContext(), "Authentication failed.",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private boolean validateForm() {
+        boolean valid = true;
+        if (!validateEmail(email)) {
+            mEditTextAddEmail.setError("Not a valid email address!");
+            valid = false;
+        } else {
+            mEditTextAddEmail.setError(null);
+        }
+
+        if (!validatePassword(password)) {
+            mEditTextAddPassword.setError("Not a valid password!");
+            valid = false;
+        } else {
+            mEditTextAddPassword.setError(null);
+        }
+        return valid;
+    }
+
+    private boolean validateEmail(String email) {
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
+    public boolean validatePassword(String password) {
+        return (password.length() >= 4 & password.length() <= 20);
+    }
+
+    private void hideKeyboard() {
+        View view = Objects.requireNonNull(getActivity()).getCurrentFocus();
+        if (view != null) {
+            ((InputMethodManager) Objects.requireNonNull(Objects.requireNonNull(getContext())
+                    .getSystemService(Context.INPUT_METHOD_SERVICE))).
+                    hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
     }
 
     @OnClick(R.id.text_forgot_the_password_fragment_login_with_email)
      void recoveryPasswordScreen() {
-        fragment = new ForgotPasswordFragment();
-//        fm = getFragmentManager();
-//        assert fm != null;
+        Fragment fragment = new ForgotPasswordFragment();
         assert getFragmentManager() != null;
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.main_container, new ForgotPasswordFragment(), fragment.getClass().getName())
+        transaction.replace(R.id.main_container,
+                new ForgotPasswordFragment(), fragment.getClass().getName())
+                .addToBackStack("ForgotPasswordFragment")
                 .commit();
-        Log.d(LOG_TAG, "Forgot The Password is clicked");
+        Log.d(TAG, "Forgot The Password is clicked");
     }
 
     @OnClick(R.id.button_return)
      void returnToLaunchScreen() {
-
-        fragment = new SplashLoginFragment();
         assert getFragmentManager() != null;
         FragmentManager fm = getFragmentManager();
-        Fragment f = fm.findFragmentById(R.id.main_container);
-
+        fm.findFragmentById(R.id.main_container);
         if(fm.getBackStackEntryCount() > 0)
             fm.popBackStack();
-        Log.d(LOG_TAG, "Return To Launch Screen is clicked");
+        Log.d(TAG, "Return To Launch Screen is clicked");
     }
 
     @Override

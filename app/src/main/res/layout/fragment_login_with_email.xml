@@ -65,8 +65,8 @@
 
     <Button
         android:layout_marginTop="8dp"
-        android:id="@+id/button_create_an_account_fragment_login_with_email"
-        android:text="@string/create"
+        android:id="@+id/button_login_fragment_login_with_email"
+        android:text="@string/Login"
         style="@style/ButtonCreateAnAccountStyle"
         />
 
@@ -78,4 +78,5 @@
         android:layout_marginTop="16dp"
         android:layout_gravity="left"
         />
+
 </LinearLayout>
