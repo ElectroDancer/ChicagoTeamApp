@@ -1,8 +1,21 @@
 <resources>
     <string name="app_name">Chicago Team App</string>
-    <string name="create_an_account">Create an account</string>
-    <string name="more_ways_to_login">More ways to login</string>
-    <string name="facebook">Facebook</string>
-    <string name="login_with_email">Login with Email</string>
-    <string name="welcome_nlet_s_reach_the_goal">Welcome. Let\'s reach the goal.</string>
+    <string name="action_create_an_account">Create an account</string>
+    <string name="action_more_ways_to_login">More ways to login</string>
+    <string name="action_facebook">Facebook</string>
+    <string name="action_login_with_email">Login with Email</string>
+    <string name="title_welcome">Welcome.\nLet\'s reach the goal.</string>
+    <string name="action_add_task">Add task</string>
+    <string name="action_show_lists">Show lists</string>
+    <string name="action_add_new_list">Add new list</string>
+    <string name="action_profile">My profile</string>
+    <string name="msg_of">of</string>
+    <string name="hint_name">Name</string>
+    <string name="hint_date">Date</string>
+    <string name="hint_description">Description</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hint_new_list_name">New list\'s name</string>
+    <string name="action_add">Add</string>
 </resources>
