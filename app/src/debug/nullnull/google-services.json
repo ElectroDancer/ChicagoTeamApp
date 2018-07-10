@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "115124474826",
+    "firebase_url": "https://chicago-team-app.firebaseio.com",
+    "project_id": "chicago-team-app",
+    "storage_bucket": "chicago-team-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:115124474826:android:84c1f3bf4d6f5eb2",
+        "android_client_info": {
+          "package_name": "com.chicagoteamapp.chicagoteamapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "115124474826-91q07c1o6842t6vs7v26horoj9f3bp8i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.chicagoteamapp.chicagoteamapp",
+            "certificate_hash": "2372654d6275dd7ba3cdc3bf928ff725b8f1fc18"
+          }
+        },
+        {
+          "client_id": "115124474826-io54enpv5sc8kvbhcvttla3gi6osnisk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYGqk-F34GUEcizdZnIaNsYyAn66DC9DE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "115124474826-io54enpv5sc8kvbhcvttla3gi6osnisk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,82 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context="com.chicagoteamapp.chicagoteamapp.fragments.LoginWithEmailFragment"
+    android:windowSoftInputMode="adjustResize"
+    >
+
+    <ImageButton
+        android:id="@+id/button_return"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_keyboard_arrow_left"
+        android:background="@color/White"
+        />
+
+    <TextView
+        android:id="@+id/text_login_with_email_fragment_login_with_email"
+        style="@style/Header1Style"
+        android:text="Login with email"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/layout_email_fragment_login_with_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColorHint="@color/colorHint"
+        android:focusable="true"
+        >
+
+        <EditText
+            android:id="@+id/edit_add_email_fragment_login_with_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_email"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/textColor"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/layout_password_fragment_login_with_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColorHint="@color/colorHint"
+        app:passwordToggleEnabled = "true"
+        app:passwordToggleTint="@color/colorHint"
+        >
+
+        <EditText
+            android:id="@+id/edit_text_password_fragment_login_with_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_password"
+            android:inputType="textPassword"
+            android:textColor="@color/textColor"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:layout_marginTop="8dp"
+        android:id="@+id/button_login_fragment_login_with_email"
+        android:text="@string/Login"
+        style="@style/ButtonCreateAnAccountStyle"
+        />
+
+    <TextView
+        android:id="@+id/text_forgot_the_password_fragment_login_with_email"
+        style="@style/TextStyle"
+        android:text="@string/forgot_the_password"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="left"
+        />
+
+</LinearLayout>

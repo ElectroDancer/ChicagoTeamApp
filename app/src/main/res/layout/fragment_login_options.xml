@@ -1,0 +1,158 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.chicagoteamapp.chicagoteamapp.fragments.LoginOptionsFragment"
+    android:orientation="vertical"
+    android:id="@+id/fragment_login_options"
+    >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        >
+        <ImageButton
+            android:id="@+id/button_return"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/ic_close"
+            android:background="@color/White"
+            android:contentDescription="@string/button_exit_from_other_login_options"
+            />
+        <TextView
+            android:id="@+id/title_login_options_fragment_login_options"
+            style="@style/Header2Style"
+            android:layout_gravity="center"
+            android:text="@string/title_other_login_options"
+            android:gravity="bottom"
+            />
+    </FrameLayout>
+
+    <FrameLayout
+        style="@style/ButtonEmailStyle"
+        android:layout_marginTop="120dp"
+        >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <Button
+                android:id="@+id/button_login_with_email_fragment_login_options"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/Black"
+                android:textSize="@dimen/smallTxtSize"
+                android:textAllCaps="false"
+                android:text="@string/email"
+                android:visibility="visible"
+                android:background="@drawable/shape_login_with_email"
+                />
+        </FrameLayout>
+
+        <ImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/ic_email"
+            android:layout_gravity="center_vertical"
+            android:padding="8dp"
+            android:visibility="visible"
+            android:contentDescription="@string/ic_mail" />
+    </FrameLayout>
+
+    <FrameLayout
+        style="@style/ButtonFacebookLoginStyle"
+        >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <com.facebook.login.widget.LoginButton
+                android:id="@+id/button_facebook_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                />
+            <Button
+                android:id="@+id/button_fb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/smallTxtSize"
+                android:textAllCaps="false"
+                android:text="@string/action_facebook"
+                android:layout_gravity="center"
+                android:textColor="@color/White"
+                android:visibility="visible"
+                android:background="@drawable/shape_facebook_login"
+                />
+        </FrameLayout>
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_facebook"
+            android:padding="8dp"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@string/ic_facebook" />
+    </FrameLayout>
+
+    <FrameLayout
+        style="@style/ButtonTwitterLoginStyle"
+        >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <com.twitter.sdk.android.core.identity.TwitterLoginButton
+                android:id="@+id/twitterLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:visibility="gone"
+                />
+
+            <Button
+                android:id="@+id/button_twitter_fragment_login_options"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/smallTxtSize"
+                android:textAllCaps="false"
+                android:text="@string/twitter"
+                android:layout_gravity="center"
+                android:textColor="@color/White"
+                android:visibility="visible"
+                android:background="@drawable/shape_twitter_login"
+                />
+        </FrameLayout>
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_twitter"
+            android:padding="8dp"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@string/ic_twitter" />
+    </FrameLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/smallTxtSize"
+        android:layout_gravity="center"
+        android:textColor="@color/Black"
+        android:text="@string/or"
+        />
+
+    <Button
+        android:id="@+id/button_create_an_account_fragment_login_options"
+        android:text="@string/action_create_an_account"
+        style="@style/ButtonCreateAnAccountStyle"
+        />
+
+</LinearLayout>
