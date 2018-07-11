@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.chicagoteamapp.chicagoteamapp.LaunchActivity;
 import com.chicagoteamapp.chicagoteamapp.R;
+import com.chicagoteamapp.chicagoteamapp.taskslist.TasksActivity;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -90,7 +91,6 @@ public class LoginOptionsFragment extends Fragment implements View.OnClickListen
         View view = inflater.inflate(R.layout.fragment_login_options, container, false);
         ButterKnife.bind(this, view);
 
-
         FirebaseApp.initializeApp(getContext());
         initializeFacebook();
         initializeTwitter();
@@ -100,6 +100,21 @@ public class LoginOptionsFragment extends Fragment implements View.OnClickListen
         return view;
     }
 
+
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        mCallbackManager.onActivityResult(requestCode, resultCode, data);
+//        mTwitterLoginButton.onActivityResult(requestCode, resultCode, data);
+//    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+    }
+
     private void initializeFacebook() {
         mCallbackManager = CallbackManager.Factory.create();
         mLoginFacebook.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
@@ -107,8 +122,12 @@ public class LoginOptionsFragment extends Fragment implements View.OnClickListen
             public void onSuccess(LoginResult loginResult) {
                 Log.d(TAG, "facebook:onSuccess:" + loginResult);
                 handleFacebookAccessToken(loginResult.getAccessToken());
-                Toast.makeText(getActivity(), "Welcome " + mUser.getProviderData().get(0).getDisplayName(),
+                FirebaseUser currentUser = mAuth.getCurrentUser();
+                assert currentUser != null;
+                Toast.makeText(getActivity(), "Welcome " + currentUser.getProviderData().get(0).getDisplayName(),
                         Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), TasksActivity.class);
+                startActivity(intent);
             }
 
             @Override
@@ -139,13 +158,6 @@ public class LoginOptionsFragment extends Fragment implements View.OnClickListen
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        mAuth = FirebaseAuth.getInstance();
-        mUser = mAuth.getCurrentUser();
     }
 
     @Override
@@ -226,9 +238,9 @@ public class LoginOptionsFragment extends Fragment implements View.OnClickListen
 
     @OnClick(R.id.button_return)
     void returnToLaunchScreen() {
-        assert getFragmentManager() != null;
+        fragment = new SplashLoginFragment();
         FragmentManager fm = getFragmentManager();
-        fm.findFragmentById(R.id.main_container);
+        assert fm != null;
         if(fm.getBackStackEntryCount() > 0)
             fm.popBackStack();
         Log.d(TAG, "Return To Launch Screen is clicked");

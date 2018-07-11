@@ -86,12 +86,16 @@ public class ListsFragment extends Fragment {
 
     @OnClick(R.id.button_profile)
     public void onButtonProfileClick() {
-
+        ProfileFragment fragment = new ProfileFragment();
+        BottomPopupWindow popupWindow =
+                Objects.requireNonNull(getActivity()).findViewById(R.id.bottom_popup_window);
+        popupWindow.setFragment(fragment);
+        popupWindow.show();
     }
 
     @OnClick(R.id.image_button_close)
     public void onButtonCloseClick() {
-        ViewUtil.hideKeyboard(getActivity());
+        ViewUtil.hideKeyboard(Objects.requireNonNull(getActivity()));
         BottomPopupWindow popupWindow =
                 Objects.requireNonNull(getActivity()).findViewById(R.id.bottom_popup_window);
         popupWindow.hide();

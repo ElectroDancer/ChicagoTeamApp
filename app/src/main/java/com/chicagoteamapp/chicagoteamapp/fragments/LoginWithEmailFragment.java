@@ -2,6 +2,7 @@ package com.chicagoteamapp.chicagoteamapp.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import com.chicagoteamapp.chicagoteamapp.Account;
 import com.chicagoteamapp.chicagoteamapp.R;
+import com.chicagoteamapp.chicagoteamapp.taskslist.TasksActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
@@ -103,6 +105,8 @@ public class LoginWithEmailFragment extends Fragment implements View.OnClickList
                                         .getValue(Account.class)).getName()); //set the name
                                 Toast.makeText(getContext(), "Welcome " + name,
                                         Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(getContext(), TasksActivity.class);
+                                startActivity(intent);
                             }
                             @Override
                             public void onCancelled(@NonNull DatabaseError databaseError) {

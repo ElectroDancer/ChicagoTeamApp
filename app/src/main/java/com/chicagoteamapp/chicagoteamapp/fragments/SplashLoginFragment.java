@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.chicagoteamapp.chicagoteamapp.BackableFragment;
 import com.chicagoteamapp.chicagoteamapp.R;
+import com.chicagoteamapp.chicagoteamapp.taskslist.TasksActivity;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -53,9 +54,6 @@ public class SplashLoginFragment extends BackableFragment implements View.OnClic
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        FirebaseApp.initializeApp(getActivity());
-//        mAuth = FirebaseAuth.getInstance();
-//        mUser = mAuth.getCurrentUser();
     }
 
     @Nullable
@@ -64,13 +62,25 @@ public class SplashLoginFragment extends BackableFragment implements View.OnClic
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_splash_login, container, false);
-
         ButterKnife.bind(this, view);
 
         FirebaseApp.initializeApp(getContext());
-
+        initializeFacebook();
         Log.d(TAG, "onCreateView");
         return view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        mCallbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
     }
 
     private void initializeFacebook() {
@@ -82,6 +92,8 @@ public class SplashLoginFragment extends BackableFragment implements View.OnClic
                 handleFacebookAccessToken(loginResult.getAccessToken());
                 Toast.makeText(getActivity(), "Welcome " + mUser.getProviderData().get(0).getDisplayName(),
                         Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), TasksActivity.class);
+                startActivity(intent);
             }
 
             @Override
@@ -114,19 +126,6 @@ public class SplashLoginFragment extends BackableFragment implements View.OnClic
                 });
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        mAuth = FirebaseAuth.getInstance();
-        mUser = mAuth.getCurrentUser();
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        // Pass the activity result back to the Facebook SDK
-        mCallbackManager.onActivityResult(requestCode, resultCode, data);
-    }
 
     @OnClick(R.id.button_create_an_account_fragment_splash_login)
     void createAnAccount() {
