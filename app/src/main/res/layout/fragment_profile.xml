@@ -7,12 +7,12 @@
     tools:context=".taskslist.popup.ProfileFragment">
 
     <ImageButton
-        android:id="@+id/button_return"
+        android:id="@+id/image_button_return_to_lists"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:background="@color/White"
+        android:background="@android:color/transparent"
         android:contentDescription="@string/return_back"
         android:src="@drawable/baseline_keyboard_arrow_left_black_36"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,7 +27,7 @@
         android:layout_marginTop="16dp"
         android:text="@string/name"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_return"
+        app:layout_constraintTop_toBottomOf="@+id/image_button_return_to_lists"
         tools:ignore="MissingConstraints" />
 
     <TextView
@@ -97,16 +97,16 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="@string/lists"
-        app:layout_constraintStart_toEndOf="@+id/button_return"
+        app:layout_constraintStart_toEndOf="@+id/image_button_return_to_lists"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/button_exit"
+        android:id="@+id/image_button_exit_to_splash_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="16dp"
-        android:background="@color/White"
+        android:background="@android:color/transparent"
         android:contentDescription="@string/exit_from_items_list"
         android:src="@drawable/baseline_exit_to_app_black_24"
         app:layout_constraintEnd_toEndOf="parent"
@@ -169,16 +169,15 @@
             android:textColor="@color/Black"
             android:textSize="@dimen/smallTxtSize"
             android:visibility="visible" />
-
     </LinearLayout>
 
     <ImageButton
-        android:id="@+id/button_return_from_profile"
+        android:id="@+id/image_button_close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
-        android:background="@color/White"
+        android:background="@android:color/transparent"
         android:contentDescription="@string/button_exit_from_other_login_options"
         android:src="@drawable/ic_action_close"
         app:layout_constraintStart_toStartOf="parent"

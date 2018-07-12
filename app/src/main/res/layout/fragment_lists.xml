@@ -47,7 +47,8 @@
         android:background="@android:color/transparent"
         android:src="@drawable/ic_action_close"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:contentDescription="@string/close_window" />
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="0dp"
@@ -64,7 +65,8 @@
         android:layout_height="wrap_content"
         android:drawablePadding="10dp"
         android:hint="@string/hint_new_list_name"
-        tools:text="New list name"/>
+        tools:text="New list name"
+        android:inputType="textAutoComplete" />
 
     </android.support.design.widget.TextInputLayout>
 

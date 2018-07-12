@@ -55,4 +55,6 @@
     <string name="your_name">Your name</string>
     <string name="do_you_want_to_delete_your_account">Do you want to delete your account?</string>
     <string name="your_email">Your Email</string>
+    <string name="close_window">Close window</string>
+    <string name="login_with_email">Login with email</string>
 </resources>

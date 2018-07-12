@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.chicagoteamapp.chicagoteamapp.fragments.LoginOptionsFragment"
+    tools:context="com.chicagoteamapp.chicagoteamapp.ui.LoginOptionsFragment"
     android:orientation="vertical"
     android:id="@+id/fragment_login_options"
     >
@@ -13,12 +13,12 @@
         android:layout_marginTop="8dp"
         >
         <ImageButton
-            android:id="@+id/button_return"
+            android:id="@+id/image_button_return"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:src="@drawable/ic_close"
-            android:background="@color/White"
+            android:background="@android:color/transparent"
             android:contentDescription="@string/button_exit_from_other_login_options"
             />
         <TextView

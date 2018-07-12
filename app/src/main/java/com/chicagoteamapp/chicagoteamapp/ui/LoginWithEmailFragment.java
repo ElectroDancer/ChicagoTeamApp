@@ -1,4 +1,4 @@
-package com.chicagoteamapp.chicagoteamapp.fragments;
+package com.chicagoteamapp.chicagoteamapp.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -32,9 +31,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.twitter.sdk.android.core.models.User;
 
-import java.util.ArrayList;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -50,9 +47,9 @@ public class LoginWithEmailFragment extends Fragment implements View.OnClickList
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
-    @BindView(R.id.button_return)
+    @BindView(R.id.image_button_return)
     ImageButton mImageButtonReturnToLaunchScreen;
-    @BindView(R.id.edit_add_email_fragment_login_with_email)
+    @BindView(R.id.edit_text_add_email_fragment_login_with_email)
     EditText mEditTextAddEmail;
     @BindView(R.id.edit_text_password_fragment_login_with_email)
     EditText mEditTextAddPassword;
@@ -175,7 +172,7 @@ public class LoginWithEmailFragment extends Fragment implements View.OnClickList
         Log.d(TAG, "Forgot The Password is clicked");
     }
 
-    @OnClick(R.id.button_return)
+    @OnClick(R.id.image_button_return)
     void returnToLaunchScreen() {
         assert getFragmentManager() != null;
         FragmentManager fm = getFragmentManager();

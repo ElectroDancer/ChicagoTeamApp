@@ -1,4 +1,4 @@
-package com.chicagoteamapp.chicagoteamapp.fragments;
+package com.chicagoteamapp.chicagoteamapp.ui;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -22,14 +21,9 @@ import com.chicagoteamapp.chicagoteamapp.Account;
 import com.chicagoteamapp.chicagoteamapp.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.twitter.sdk.android.core.models.User;
 
-import java.util.ArrayList;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -49,15 +43,13 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
 
     private FirebaseUser mUser;
     private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
     private DatabaseReference mDatabase;
-    private String mUserID;
-    @BindView(R.id.button_return) ImageButton mImageButtonReturnToLaunchScreen;
+    @BindView(R.id.image_button_return) ImageButton mImageButtonReturnToLaunchScreen;
     @BindView(R.id.layout_name_fragment_signup) TextInputLayout mTextInputLayoutAddName;
-    @BindView(R.id.edit_add_name_fragment_signup) EditText mEditTextAddName;
-    @BindView(R.id.edit_add_email_fragment_signup) EditText mEditTextAddEmail;
+    @BindView(R.id.edit_text_add_name_fragment_signup) EditText mEditTextAddName;
+    @BindView(R.id.edit_text_add_email_fragment_signup) EditText mEditTextAddEmail;
     @BindView(R.id.layout_password_fragment_signup) TextInputLayout mTextInputLayoutAddPassword;
-    @BindView(R.id.editTextPassword_fragment_signup) EditText mEditTextAddPassword;
+    @BindView(R.id.edit_text_password_fragment_signup) EditText mEditTextAddPassword;
     @BindView(R.id.button_create_an_account_fragment_signup) Button mButtonCreateAnAccount;
 
     public SignupFragment() {
@@ -72,21 +64,6 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
         ButterKnife.bind(this, view);
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
-//        mAuthListener = firebaseAuth -> {
-//            mUser = firebaseAuth.getCurrentUser();
-//            if (mUser != null) {
-//                // User is signed in
-//                Log.d(TAG, "onAuthStateChanged:signed_in:" + mUser.getUid());
-//                Toast.makeText(getContext(), "Successfully signed in with: " + mUser.getEmail(),
-//                        Toast.LENGTH_SHORT).show();
-//            } else {
-//                // User is signed out
-//                Log.d(TAG, "onAuthStateChanged:signed_out");
-//                Toast.makeText(getContext(), "Successfully signed out.",
-//                        Toast.LENGTH_SHORT).show();
-//            }
-//        };
-////        mUserID = mUser.getUid();
         Log.d(TAG, "onCreateView");
         return view;
     }
@@ -186,7 +163,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
         return name.length() >= 4 & name.length() <= 16;
     }
 
-    @OnClick(R.id.button_return)
+    @OnClick(R.id.image_button_return)
     void returnToLoginOptionsScreen() {
         assert getFragmentManager() != null;
         FragmentManager fm = getFragmentManager();
@@ -195,20 +172,6 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
             fm.popBackStack();
         Log.d(TAG, "Return To Launch Screen is clicked");
     }
-
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        mAuth.addAuthStateListener(mAuthListener);
-//    }
-
-//    @Override
-//    public void onStop() {
-//        super.onStop();
-//        if (mAuthListener != null) {
-//            mAuth.removeAuthStateListener(mAuthListener);
-//        }
-//    }
 
     @Override
     public void onClick(View v) {

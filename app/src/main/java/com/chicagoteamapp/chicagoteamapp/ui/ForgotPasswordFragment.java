@@ -1,4 +1,4 @@
-package com.chicagoteamapp.chicagoteamapp.fragments;
+package com.chicagoteamapp.chicagoteamapp.ui;
 
 
 import android.annotation.SuppressLint;
@@ -32,8 +32,8 @@ public class ForgotPasswordFragment extends Fragment implements View.OnClickList
     private static final String EMAIL_PATTERN = "^[a-zA-Z0-9#_~!$&'()*+,;=:.\"<>@\\[\\]\\\\]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*$";
     private Pattern pattern = Pattern.compile(EMAIL_PATTERN);
 
-    @BindView(R.id.button_return) ImageButton mImageButtonReturnToLaunchScreen;
-    @BindView(R.id.edit_add_email_if_forgot_password_fragment_forgot_password) EditText mEditTextAddEmail;
+    @BindView(R.id.image_button_return) ImageButton mImageButtonReturnToLaunchScreen;
+    @BindView(R.id.edit_text_add_email_if_forgot_password_fragment_forgot_password) EditText mEditTextAddEmail;
     @BindView(R.id.button_reset_password_fragment_forgot_password) Button mButtonCreateAnAccount;
 
     @Nullable
@@ -78,7 +78,7 @@ public class ForgotPasswordFragment extends Fragment implements View.OnClickList
         return matcher.matches();
     }
 
-    @OnClick(R.id.button_return)
+    @OnClick(R.id.image_button_return)
     void returnToLoginOptionsScreen() {
         assert getFragmentManager() != null;
         FragmentManager fm = getFragmentManager();

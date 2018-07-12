@@ -1,4 +1,4 @@
-package com.chicagoteamapp.chicagoteamapp.fragments;
+package com.chicagoteamapp.chicagoteamapp.ui;
 
 
 import android.content.Intent;
@@ -14,11 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.chicagoteamapp.chicagoteamapp.LaunchActivity;
 import com.chicagoteamapp.chicagoteamapp.R;
 import com.chicagoteamapp.chicagoteamapp.taskslist.TasksActivity;
@@ -40,20 +37,16 @@ import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterConfig;
-import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
-import com.twitter.sdk.android.core.models.User;
 
 import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import retrofit2.Call;
-import retrofit2.Response;
 
 public class LoginOptionsFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "LoginOptionsFragment";
@@ -64,7 +57,7 @@ public class LoginOptionsFragment extends Fragment implements View.OnClickListen
     private FirebaseUser mUser;
     private TwitterAuthClient client;
 
-    @BindView(R.id.button_return) ImageButton mImageButtonReturnToLaunchScreen;
+    @BindView(R.id.image_button_return) ImageButton mImageButtonReturnToLaunchScreen;
     @BindView(R.id.button_login_with_email_fragment_login_options) Button mEmail;
     @BindView(R.id.button_fb) Button mFacebook;
     @BindView(R.id.button_facebook_login) LoginButton mLoginFacebook;
@@ -94,25 +87,11 @@ public class LoginOptionsFragment extends Fragment implements View.OnClickListen
         FirebaseApp.initializeApp(getContext());
         initializeFacebook();
         initializeTwitter();
-//        initializeNewTwitter();
-
-        Log.d(TAG, "onCreateView");
-        return view;
-    }
-
-
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        mCallbackManager.onActivityResult(requestCode, resultCode, data);
-//        mTwitterLoginButton.onActivityResult(requestCode, resultCode, data);
-//    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
+//        initializeNewTwitter();
+        Log.d(TAG, "onCreateView");
+        return view;
     }
 
     private void initializeFacebook() {
@@ -122,9 +101,9 @@ public class LoginOptionsFragment extends Fragment implements View.OnClickListen
             public void onSuccess(LoginResult loginResult) {
                 Log.d(TAG, "facebook:onSuccess:" + loginResult);
                 handleFacebookAccessToken(loginResult.getAccessToken());
-                FirebaseUser currentUser = mAuth.getCurrentUser();
-                assert currentUser != null;
-                Toast.makeText(getActivity(), "Welcome " + currentUser.getProviderData().get(0).getDisplayName(),
+                mAuth = FirebaseAuth.getInstance();
+                mUser = mAuth.getCurrentUser();
+                Toast.makeText(getActivity(), "Welcome " + mUser.getDisplayName(),
                         Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getContext(), TasksActivity.class);
                 startActivity(intent);
@@ -144,15 +123,13 @@ public class LoginOptionsFragment extends Fragment implements View.OnClickListen
 
     private void handleFacebookAccessToken(AccessToken token) {
         Log.d(TAG, "handleFacebookAccessToken:" + token);
+        mAuth = FirebaseAuth.getInstance();
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(Objects.requireNonNull(getActivity()), task -> {
                     if (task.isSuccessful()) {
-                        // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithCredential:success");
-                        FirebaseUser user = mAuth.getCurrentUser();
                     } else {
-                        // If sign in fails, display a message to the user.
                         Log.w(TAG, "signInWithCredential:failure", task.getException());
                         Toast.makeText(getActivity(), "Authentication failed.",
                                 Toast.LENGTH_SHORT).show();
@@ -185,8 +162,9 @@ public class LoginOptionsFragment extends Fragment implements View.OnClickListen
                 new com.twitter.sdk.android.core.Callback<TwitterSession>() {
                     @Override
                     public void success(Result<TwitterSession> twitterSessionResult) {
-                        Toast.makeText(getActivity(), "Welcome " + mUser.getProviderData().get(0).getDisplayName(),
-                                Toast.LENGTH_SHORT).show();
+//                        mUser = mAuth.getCurrentUser();
+//                        Toast.makeText(getActivity(), "Welcome " + mUser.getDisplayName(),
+//                                Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -236,7 +214,7 @@ public class LoginOptionsFragment extends Fragment implements View.OnClickListen
                 });
     }
 
-    @OnClick(R.id.button_return)
+    @OnClick(R.id.image_button_return)
     void returnToLaunchScreen() {
         fragment = new SplashLoginFragment();
         FragmentManager fm = getFragmentManager();

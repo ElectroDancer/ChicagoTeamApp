@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
-import com.chicagoteamapp.chicagoteamapp.fragments.SplashLoginFragment;
+import com.chicagoteamapp.chicagoteamapp.ui.SplashLoginFragment;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

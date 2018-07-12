@@ -1,4 +1,4 @@
-package com.chicagoteamapp.chicagoteamapp.fragments;
+package com.chicagoteamapp.chicagoteamapp.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -37,6 +37,8 @@ import butterknife.OnClick;
 
 public class SplashLoginFragment extends BackableFragment implements View.OnClickListener {
     private static final String TAG  = "SplashLoginFragment";
+    //    public static FirebaseAuth sAuth;
+//    public static FirebaseUser sUser;
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
 
@@ -65,6 +67,8 @@ public class SplashLoginFragment extends BackableFragment implements View.OnClic
         ButterKnife.bind(this, view);
 
         FirebaseApp.initializeApp(getContext());
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
         initializeFacebook();
         Log.d(TAG, "onCreateView");
         return view;
@@ -76,13 +80,6 @@ public class SplashLoginFragment extends BackableFragment implements View.OnClic
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        mAuth = FirebaseAuth.getInstance();
-        mUser = mAuth.getCurrentUser();
-    }
-
     private void initializeFacebook() {
         mCallbackManager = CallbackManager.Factory.create();
         mLoginFacebook.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
@@ -90,7 +87,9 @@ public class SplashLoginFragment extends BackableFragment implements View.OnClic
             public void onSuccess(LoginResult loginResult) {
                 Log.d(TAG, "facebook:onSuccess:" + loginResult);
                 handleFacebookAccessToken(loginResult.getAccessToken());
-                Toast.makeText(getActivity(), "Welcome " + mUser.getProviderData().get(0).getDisplayName(),
+                mAuth = FirebaseAuth.getInstance();
+                mUser = mAuth.getCurrentUser();
+                Toast.makeText(getActivity(), "Welcome " + mUser.getDisplayName(),
                         Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getContext(), TasksActivity.class);
                 startActivity(intent);
@@ -110,22 +109,19 @@ public class SplashLoginFragment extends BackableFragment implements View.OnClic
 
     private void handleFacebookAccessToken(AccessToken token) {
         Log.d(TAG, "handleFacebookAccessToken:" + token);
+        mAuth = FirebaseAuth.getInstance();
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(Objects.requireNonNull(getActivity()), task -> {
                     if (task.isSuccessful()) {
-                        // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithCredential:success");
-                        FirebaseUser user = mAuth.getCurrentUser();
                     } else {
-                        // If sign in fails, display a message to the user.
                         Log.w(TAG, "signInWithCredential:failure", task.getException());
                         Toast.makeText(getActivity(), "Authentication failed.",
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
     }
-
 
     @OnClick(R.id.button_create_an_account_fragment_splash_login)
     void createAnAccount() {

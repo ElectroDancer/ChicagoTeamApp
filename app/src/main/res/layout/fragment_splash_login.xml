@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.chicagoteamapp.chicagoteamapp.fragments.SplashLoginFragment">
+    tools:context="com.chicagoteamapp.chicagoteamapp.ui.SplashLoginFragment">
 
     <TextView
         android:id="@+id/textView"
@@ -15,7 +15,7 @@
         android:layout_weight="1"
         android:gravity="bottom"
         android:text="@string/title_welcome"
-        />
+        android:layout_height="0dp" />
 
     <Button
         android:id="@+id/button_create_an_account_fragment_splash_login"

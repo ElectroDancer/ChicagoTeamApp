@@ -28,7 +28,8 @@
                 android:drawablePadding="10dp"
                 android:drawableStart="@drawable/ic_action_edit"
                 android:hint="@string/hint_name"
-                tools:text="Compiler theory" />
+                tools:text="Compiler theory"
+                android:inputType="textAutoCorrect" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -43,7 +44,8 @@
                 android:drawablePadding="10dp"
                 android:drawableStart="@drawable/ic_action_date"
                 android:hint="@string/hint_date"
-                tools:text="Tuesday, May 29" />
+                tools:text="Tuesday, May 29"
+                android:inputType="datetime" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -58,7 +60,8 @@
                 android:drawablePadding="10dp"
                 android:drawableStart="@drawable/ic_note"
                 android:hint="@string/hint_description"
-                tools:text="Example example example example example" />
+                tools:text="Example example example example example"
+                android:inputType="textMultiLine" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -73,7 +76,8 @@
         android:background="@android:color/transparent"
         android:src="@drawable/ic_action_close"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:contentDescription="@string/close_window" />
 
     <Button
         android:id="@+id/button_add_task"

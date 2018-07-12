@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -128,5 +129,16 @@ public class BottomPopupWindow extends FrameLayout {
                     }
                 })
                 .start();
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
+        final int value = Math.round(500 * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+        final int height = MeasureSpec.makeMeasureSpec(value, MeasureSpec.AT_MOST);
+        final int width = getMeasuredWidth();
+        setMeasuredDimension(width, height);
+//        super.onMeasure(width, height);
     }
 }
