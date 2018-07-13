@@ -76,12 +76,14 @@ public class ListsFragment extends Fragment {
 
     @OnClick(R.id.button_add_list)
     public void onButtonAddListClick() {
-        MyList list = new MyList(mEditTextNewList.getText().toString());
-        mEditTextNewList.getText().clear();
-        MyApp.getInstance()
-                .getDatabase()
-                .listDao()
-                .insert(list);
+        if (mEditTextNewList.getText().length() != 0){
+            MyList list = new MyList(mEditTextNewList.getText().toString());
+            mEditTextNewList.getText().clear();
+            MyApp.getInstance()
+                    .getDatabase()
+                    .listDao()
+                    .insert(list);
+        }
     }
 
     @OnClick(R.id.button_profile)

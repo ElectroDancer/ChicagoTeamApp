@@ -22,7 +22,7 @@ class TasksListAdapter extends ListAdapter<MyTask, TasksListAdapter.ViewHolder> 
 
     private OnListInteractionListener mListener;
 
-    protected TasksListAdapter(OnListInteractionListener listener) {
+    TasksListAdapter(OnListInteractionListener listener) {
         super(new DiffUtil.ItemCallback<MyTask>() {
             @Override
             public boolean areItemsTheSame(MyTask oldItem, MyTask newItem) {

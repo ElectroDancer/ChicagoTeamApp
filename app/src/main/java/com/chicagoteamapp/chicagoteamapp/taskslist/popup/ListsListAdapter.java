@@ -22,7 +22,7 @@ class ListsListAdapter extends
 
     private OnListInteractionListener mListener;
 
-    public ListsListAdapter(OnListInteractionListener listener) {
+    ListsListAdapter(OnListInteractionListener listener) {
         super(new DiffUtil.ItemCallback<MyList>() {
             @Override
             public boolean areItemsTheSame(MyList oldItem, MyList newItem) {

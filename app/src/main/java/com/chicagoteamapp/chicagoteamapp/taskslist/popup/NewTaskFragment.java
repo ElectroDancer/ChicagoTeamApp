@@ -72,16 +72,35 @@ public class NewTaskFragment extends Fragment {
 
     @OnClick(R.id.button_add_task)
     public void onButtonAddTaskClick() {
+        String Title = mEditTextTitle.getText().toString();
+        String Date = mEditTextDate.getText().toString();
+        String Description = mEditTextDescription.getText().toString();
+        verifyNewTask(Title, Date, Description);
+    }
+
+    private void verifyNewTask(String Title, String Date, String Description) {
         TaskDao taskDao = MyApp.getInstance().getDatabase().taskDao();
-        MyTask task = new MyTask(mEditTextTitle.getText().toString(), mListId);
-        task.setDate(mEditTextDate.getText().toString());
-        task.setDescription(mEditTextDescription.getText().toString());
+        MyTask task = null;
+        if (Title.length() != 0) {
+            task = new MyTask(Title, mListId);
+        }
+
+        if (Date.length() != 0) {
+            assert task != null;
+            task.setDate(Date);
+        }
+
+        if (Description.length() != 0) {
+            assert task != null;
+            task.setDescription(Description);
+        }
+
         taskDao.insert(task);
     }
 
     @OnClick(R.id.image_button_close)
     public void onButtonCloseClick() {
-        ViewUtil.hideKeyboard(getActivity());
+        ViewUtil.hideKeyboard(Objects.requireNonNull(getActivity()));
         BottomPopupWindow popupWindow =
                 Objects.requireNonNull(getActivity()).findViewById(R.id.bottom_popup_window);
         popupWindow.hide();
