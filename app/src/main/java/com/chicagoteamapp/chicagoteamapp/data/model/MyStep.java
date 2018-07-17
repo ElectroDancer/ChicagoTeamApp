@@ -9,6 +9,10 @@ import android.support.annotation.NonNull;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
+/**
+ * 1 ver of DB: the table was added
+ */
+
 @Entity(tableName = "Steps", indices = @Index("id_task"), foreignKeys =
 @ForeignKey(entity = MyTask.class,
         parentColumns = "id",

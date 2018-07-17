@@ -23,8 +23,11 @@ public interface ListDao {
     @Delete
     void delete(MyList list);
 
-    @Query("SELECT * FROM lists")
-    LiveData<List<MyList>> getAllLists();
+    @Query("SELECT * FROM lists WHERE id_user=:userId")
+    LiveData<List<MyList>> getAllLists(final String userId);
+
+//    @Query("SELECT * FROM lists")
+//    LiveData<List<MyList>> getAllLists();
 
     @Query("SELECT COUNT(*) FROM lists")
     int getListsCount();

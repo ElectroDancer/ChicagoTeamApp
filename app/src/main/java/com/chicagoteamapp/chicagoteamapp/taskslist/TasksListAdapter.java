@@ -10,10 +10,8 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import com.chicagoteamapp.chicagoteamapp.MyApp;
 import com.chicagoteamapp.chicagoteamapp.R;
 import com.chicagoteamapp.chicagoteamapp.data.model.MyTask;
-import com.chicagoteamapp.chicagoteamapp.data.room.StepDao;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -84,10 +82,10 @@ class TasksListAdapter extends ListAdapter<MyTask, TasksListAdapter.ViewHolder> 
             mCheckBoxCompleted.setChecked(mTask.isCompleted());
             mCheckBoxCompleted.setOnCheckedChangeListener((compoundButton, b) -> {
                 mTask.setCompleted(mCheckBoxCompleted.isChecked());
-                MyApp.getInstance()
-                        .getDatabase()
-                        .taskDao()
-                        .update(mTask);
+//                MyApp.getInstance()
+//                        .getDatabase()
+//                        .taskDao()
+//                        .update(mTask);
             });
         }
 
@@ -105,11 +103,12 @@ class TasksListAdapter extends ListAdapter<MyTask, TasksListAdapter.ViewHolder> 
         }
 
         private String parseTaskProgress(MyTask task) {
-            StepDao stepDao = MyApp.getInstance().getDatabase().stepDao();
-            String of = mView.getContext().getString(R.string.msg_of);
-            int completedStepsCount = stepDao.getCompletedStepsCount(task.getId());
-            int stepsCount = stepDao.geStepsCount(task.getId());
-            return completedStepsCount + " " + of + " " + stepsCount;
+//            StepDao stepDao = MyApp.getInstance().getDatabase().stepDao();
+//            String of = mView.getContext().getString(R.string.msg_of);
+//            int completedStepsCount = stepDao.getCompletedStepsCount(task.getId());
+//            int stepsCount = stepDao.geStepsCount(task.getId());
+//            return completedStepsCount + " " + of + " " + stepsCount;
+            return null;
         }
     }
 

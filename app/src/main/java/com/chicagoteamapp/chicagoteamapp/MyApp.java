@@ -15,6 +15,7 @@ public class MyApp extends Application {
         super.onCreate();
         sInstance = this;
         mDatabase = Room.databaseBuilder(this, TaskDatabase.class, "TaskDatabase.db")
+                .addMigrations(TaskDatabase.MIGRATION_1_2)
                 .allowMainThreadQueries()
                 .build();
     }

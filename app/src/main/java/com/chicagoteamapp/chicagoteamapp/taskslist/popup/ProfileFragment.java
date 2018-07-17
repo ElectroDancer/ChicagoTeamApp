@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.chicagoteamapp.chicagoteamapp.LaunchActivity;
+import com.chicagoteamapp.chicagoteamapp.MyApp;
 import com.chicagoteamapp.chicagoteamapp.R;
 import com.chicagoteamapp.chicagoteamapp.util.ViewUtil;
 import com.furianrt.bottompopupwindow.BottomPopupWindow;
@@ -72,6 +73,18 @@ public class ProfileFragment extends Fragment {
     @OnClick(R.id.button_save)
     void saveChangesInProfile() {
 
+    }
+
+    @OnClick(R.id.text_do_you_want_to_delete_your_account)
+    void deleteAccount() {
+        String userId = mUser.getUid();
+        MyApp.getInstance()
+                .getDatabase()
+                .userDao()
+                .delete(MyApp.getInstance()
+                        .getDatabase()
+                        .userDao()
+                        .getCurrentUser(userId));
     }
 
     @OnClick(R.id.image_button_close)

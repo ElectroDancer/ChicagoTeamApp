@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.chicagoteamapp.chicagoteamapp.MyApp;
 import com.chicagoteamapp.chicagoteamapp.R;
@@ -64,9 +65,7 @@ public class NewTaskFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_new_task, container, false);
-
         ButterKnife.bind(this, view);
-
         return view;
     }
 
@@ -83,17 +82,26 @@ public class NewTaskFragment extends Fragment {
         MyTask task = null;
         if (Title.length() != 0) {
             task = new MyTask(Title, mListId);
-        }
+            task.setDate(Date);
+            task.setDescription(Description);
+            taskDao.insert(task);
+        } else
+            Toast.makeText(getContext(), "Title is empty",
+                Toast.LENGTH_SHORT).show();
 
         if (Date.length() != 0) {
             assert task != null;
             task.setDate(Date);
-        }
+        } else
+            Toast.makeText(getContext(), "Date is empty",
+                    Toast.LENGTH_SHORT).show();
 
         if (Description.length() != 0) {
             assert task != null;
             task.setDescription(Description);
-        }
+        } else
+            Toast.makeText(getContext(), "Description is empty",
+                    Toast.LENGTH_SHORT).show();
 
         taskDao.insert(task);
     }

@@ -9,15 +9,24 @@ import android.widget.Button;
 
 import com.chicagoteamapp.chicagoteamapp.MyApp;
 import com.chicagoteamapp.chicagoteamapp.R;
+import com.chicagoteamapp.chicagoteamapp.data.model.MyUser;
+import com.chicagoteamapp.chicagoteamapp.data.room.TaskDatabase;
 import com.chicagoteamapp.chicagoteamapp.taskslist.popup.ListsFragment;
 import com.chicagoteamapp.chicagoteamapp.taskslist.popup.NewTaskFragment;
 import com.furianrt.bottompopupwindow.BottomPopupWindow;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class TasksActivity extends AppCompatActivity {
+    private FirebaseAuth mAuth;
+    private FirebaseUser mUser;
+    public String userId;
+    public String userName;
 
     @BindView(R.id.tab_layout_dots)
     TabLayout mTabDots;
@@ -39,23 +48,61 @@ public class TasksActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tasks);
 
         ButterKnife.bind(this);
+        FirebaseApp.initializeApp(this);
+        mUser = FirebaseAuth.getInstance().getCurrentUser();
+//        userId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+//        userName = Objects.requireNonNull(mAuth.getCurrentUser()).getDisplayName();
 
         mAdapter = new ListPagerAdapter(getSupportFragmentManager());
         mPagerLists.setAdapter(mAdapter);
         mTabDots.setupWithViewPager(mPagerLists, true);
+        TaskDatabase db = MyApp.getInstance().getDatabase();
 
-        MyApp.getInstance()
-                .getDatabase()
-                .listDao()
-                .getAllLists()
-                .observe(this, lists -> {
-                    mAdapter.setData(lists);
-                    if (lists == null || lists.isEmpty()) {
-                        mButtonAddTask.setVisibility(View.INVISIBLE);
-                    } else {
-                        mButtonAddTask.setVisibility(View.VISIBLE);
-                    }
-                });
+        if (db.userDao().getCurrentUser(userId) != null) {
+            MyApp.getInstance()
+                    .getDatabase()
+                    .listDao()
+                    .getAllLists(userId)
+                    .observe(this, lists -> {
+                        mAdapter.setData(lists);
+                        if (lists == null || lists.isEmpty()) {
+                            mButtonAddTask.setVisibility(View.INVISIBLE);
+                        } else {
+                            mButtonAddTask.setVisibility(View.VISIBLE);
+                        }
+                    });
+        } else {
+            MyApp.getInstance()
+                    .getDatabase()
+                    .userDao()
+                    .insert(new MyUser(userId, userName));
+
+            MyApp.getInstance()
+                    .getDatabase()
+                    .listDao()
+                    .getAllLists(userId)
+                    .observe(this, lists -> {
+                        mAdapter.setData(lists);
+                        if (lists == null || lists.isEmpty()) {
+                            mButtonAddTask.setVisibility(View.INVISIBLE);
+                        } else {
+                            mButtonAddTask.setVisibility(View.VISIBLE);
+                        }
+                    });
+        }
+
+//        MyApp.getInstance()
+//                .getDatabase()
+//                .listDao()
+//                .getAllLists()
+//                .observe(this, lists -> {
+//                    mAdapter.setData(lists);
+//                    if (lists == null || lists.isEmpty()) {
+//                        mButtonAddTask.setVisibility(View.INVISIBLE);
+//                    } else {
+//                        mButtonAddTask.setVisibility(View.VISIBLE);
+//                    }
+//                });
     }
 
     @OnClick(R.id.button_add_task)
