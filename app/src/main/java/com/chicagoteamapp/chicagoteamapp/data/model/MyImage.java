@@ -8,6 +8,10 @@ import android.arch.persistence.room.PrimaryKey;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
+/**
+ * 1 ver of DB: the table was added
+ */
+
 @Entity(tableName = "Images", indices = @Index("id_task"), foreignKeys =
 @ForeignKey(entity = MyTask.class,
         parentColumns = "id",

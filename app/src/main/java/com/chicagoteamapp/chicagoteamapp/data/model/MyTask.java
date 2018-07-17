@@ -14,6 +14,10 @@ import java.util.Objects;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
+/**
+ * 1 ver of DB: the table was added
+ */
+
 @Entity(tableName = "Tasks", indices = @Index("id_list"), foreignKeys =
 @ForeignKey(entity = MyList.class,
         parentColumns = "id",
