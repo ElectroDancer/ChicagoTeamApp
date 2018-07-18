@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.chicagoteamapp.chicagoteamapp.MyApp;
 import com.chicagoteamapp.chicagoteamapp.R;
@@ -29,6 +28,7 @@ import butterknife.OnClick;
 import static com.chicagoteamapp.chicagoteamapp.taskslist.popup.ListsListAdapter.OnListInteractionListener;
 
 public class ListsFragment extends Fragment {
+    private FirebaseAuth mAuth;
     private FirebaseUser mUser;
     public String userId;
     public String userName;
@@ -66,8 +66,9 @@ public class ListsFragment extends Fragment {
 
         ButterKnife.bind(this, view);
         mUser = FirebaseAuth.getInstance().getCurrentUser();
-//        userId = Objects.requireNonNull(mUser).getUid();
-//        userName = Objects.requireNonNull(mUser).getDisplayName();
+        userId = Objects.requireNonNull(mUser).getUid();
+        userName = Objects.requireNonNull(mUser).getDisplayName();
+
         mAdapter  = new ListsListAdapter(mListener);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -76,7 +77,9 @@ public class ListsFragment extends Fragment {
                 .listDao()
                 .getAllLists(userId)
                 .observe(this, lists -> mAdapter.submitList(lists));
+
         mRecyclerView.setAdapter(mAdapter);
+
         return view;
     }
 

@@ -78,6 +78,7 @@ public class ProfileFragment extends Fragment {
     @OnClick(R.id.text_do_you_want_to_delete_your_account)
     void deleteAccount() {
         String userId = mUser.getUid();
+        String userName = mUser.getDisplayName();
         MyApp.getInstance()
                 .getDatabase()
                 .userDao()

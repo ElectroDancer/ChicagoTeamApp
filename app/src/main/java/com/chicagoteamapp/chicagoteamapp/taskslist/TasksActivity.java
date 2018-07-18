@@ -18,6 +18,8 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Objects;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -49,9 +51,10 @@ public class TasksActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
         FirebaseApp.initializeApp(this);
-        mUser = FirebaseAuth.getInstance().getCurrentUser();
-//        userId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
-//        userName = Objects.requireNonNull(mAuth.getCurrentUser()).getDisplayName();
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+        userId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+        userName = Objects.requireNonNull(mAuth.getCurrentUser()).getDisplayName();
 
         mAdapter = new ListPagerAdapter(getSupportFragmentManager());
         mPagerLists.setAdapter(mAdapter);
