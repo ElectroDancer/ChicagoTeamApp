@@ -35,9 +35,7 @@ import butterknife.OnClick;
 
 public class SignupFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "SignupFragment";
-    private String name;
-    private String email;
-    private String password;
+    private String name, email, password;
     private static final String EMAIL_PATTERN = "^[a-zA-Z0-9#_~!$&'()*+,;=:.\"<>@\\[\\]\\\\]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*$";
     private Pattern pattern = Pattern.compile(EMAIL_PATTERN);
 

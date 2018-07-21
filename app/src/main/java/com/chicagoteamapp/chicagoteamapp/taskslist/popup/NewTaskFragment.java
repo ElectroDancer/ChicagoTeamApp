@@ -84,7 +84,6 @@ public class NewTaskFragment extends Fragment {
             task = new MyTask(Title, mListId);
             task.setDate(Date);
             task.setDescription(Description);
-            taskDao.insert(task);
         } else
             Toast.makeText(getContext(), "Title is empty",
                 Toast.LENGTH_SHORT).show();

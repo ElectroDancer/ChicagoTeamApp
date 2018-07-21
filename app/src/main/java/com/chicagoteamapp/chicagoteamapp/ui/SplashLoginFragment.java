@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.chicagoteamapp.chicagoteamapp.Account;
 import com.chicagoteamapp.chicagoteamapp.BackableFragment;
 import com.chicagoteamapp.chicagoteamapp.R;
 import com.chicagoteamapp.chicagoteamapp.taskslist.TasksActivity;
@@ -27,6 +28,8 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Objects;
 
@@ -37,8 +40,6 @@ import butterknife.OnClick;
 
 public class SplashLoginFragment extends BackableFragment implements View.OnClickListener {
     private static final String TAG  = "SplashLoginFragment";
-    //    public static FirebaseAuth sAuth;
-//    public static FirebaseUser sUser;
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
 
@@ -51,7 +52,8 @@ public class SplashLoginFragment extends BackableFragment implements View.OnClic
     @BindView(R.id.button_facebook_login) LoginButton mLoginFacebook;
 
     CallbackManager mCallbackManager;
-    public String id, name, email;
+    private DatabaseReference mDatabase;
+    public static String name, email, password = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,6 +71,7 @@ public class SplashLoginFragment extends BackableFragment implements View.OnClic
         FirebaseApp.initializeApp(getContext());
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         initializeFacebook();
         Log.d(TAG, "onCreateView");
         return view;
@@ -89,17 +92,21 @@ public class SplashLoginFragment extends BackableFragment implements View.OnClic
                 handleFacebookAccessToken(loginResult.getAccessToken());
                 mAuth = FirebaseAuth.getInstance();
                 mUser = mAuth.getCurrentUser();
-                Toast.makeText(getActivity(), "Welcome " + mUser.getDisplayName(),
+                assert mUser != null;
+                name = mUser.getDisplayName();
+                email = mUser.getEmail();
+                verifyUser(mUser);
+                if (name != null) {
+                Toast.makeText(getActivity(), "Welcome " + name,
                         Toast.LENGTH_SHORT).show();
+                }
                 Intent intent = new Intent(getContext(), TasksActivity.class);
                 startActivity(intent);
             }
-
             @Override
             public void onCancel() {
                 Log.d(TAG, "facebook:onCancel");
             }
-
             @Override
             public void onError(FacebookException error) {
                 Log.d(TAG, "facebook:onError", error);
@@ -121,6 +128,18 @@ public class SplashLoginFragment extends BackableFragment implements View.OnClic
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    private void verifyUser(FirebaseUser mUser) {
+        if (mDatabase.child(mUser.getUid()) == null) {
+            writeNewUser(SplashLoginFragment.name, SplashLoginFragment.email);
+        }
+    }
+
+    private void writeNewUser(String name, String email) {
+        Account account = new Account(name, email);
+        String mUserID = mUser.getUid();
+        mDatabase.child(mUserID).child("Account").setValue(account);
     }
 
     @OnClick(R.id.button_create_an_account_fragment_splash_login)
@@ -171,10 +190,11 @@ public class SplashLoginFragment extends BackableFragment implements View.OnClic
 
         quitDialog.setPositiveButton("Yes!", (dialog, which) ->
                 Objects.requireNonNull(getActivity()).onBackPressed());
-
+        quitDialog.setCancelable(false);
         quitDialog.setNegativeButton("No", (dialog, which) -> {
         });
 
         quitDialog.show();
+
     }
 }

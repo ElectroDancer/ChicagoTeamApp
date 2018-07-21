@@ -78,4 +78,10 @@
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
+    <style name="Dialog" parent="AlertDialog.AppCompat">
+        <item name="android:background">@drawable/shape_dialog</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
 </resources>

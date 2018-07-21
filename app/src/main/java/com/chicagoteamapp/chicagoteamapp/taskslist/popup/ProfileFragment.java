@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.chicagoteamapp.chicagoteamapp.LaunchActivity;
 import com.chicagoteamapp.chicagoteamapp.MyApp;
 import com.chicagoteamapp.chicagoteamapp.R;
+import com.chicagoteamapp.chicagoteamapp.data.model.MyUser;
+import com.chicagoteamapp.chicagoteamapp.ui.SplashLoginFragment;
 import com.chicagoteamapp.chicagoteamapp.util.ViewUtil;
 import com.furianrt.bottompopupwindow.BottomPopupWindow;
 import com.google.firebase.FirebaseApp;
@@ -45,10 +47,13 @@ public class ProfileFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         FirebaseApp.initializeApp(getContext());
+
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         assert mUser != null;
-        mTextYourName.setText(mUser.getDisplayName());
-        mTextYourEmail.setText(mUser.getEmail());
+        if (mUser.getDisplayName() == null) {
+            mTextYourName.setText(SplashLoginFragment.name);
+        } else mTextYourName.setText(mUser.getDisplayName());
+        mTextYourEmail.setText(SplashLoginFragment.email);
 
         return view;
     }
@@ -72,20 +77,20 @@ public class ProfileFragment extends Fragment {
 
     @OnClick(R.id.button_save)
     void saveChangesInProfile() {
-
     }
 
     @OnClick(R.id.text_do_you_want_to_delete_your_account)
     void deleteAccount() {
-        String userId = mUser.getUid();
-        String userName = mUser.getDisplayName();
-        MyApp.getInstance()
+        MyUser user = MyApp.getInstance()
                 .getDatabase()
                 .userDao()
-                .delete(MyApp.getInstance()
-                        .getDatabase()
-                        .userDao()
-                        .getCurrentUser(userId));
+                .getCurrentUser(mUser.getUid());
+        if (user != null) {
+            MyApp.getInstance()
+                    .getDatabase()
+                    .userDao()
+                    .delete(user);
+        }
     }
 
     @OnClick(R.id.image_button_close)

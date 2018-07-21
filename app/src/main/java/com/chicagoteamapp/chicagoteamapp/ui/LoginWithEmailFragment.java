@@ -47,6 +47,7 @@ public class LoginWithEmailFragment extends Fragment implements View.OnClickList
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
+
     @BindView(R.id.image_button_return)
     ImageButton mImageButtonReturnToLaunchScreen;
     @BindView(R.id.edit_text_add_email_fragment_login_with_email)
@@ -58,10 +59,7 @@ public class LoginWithEmailFragment extends Fragment implements View.OnClickList
     @BindView(R.id.text_forgot_the_password_fragment_login_with_email)
     TextView mTextForgotThePassword;
 
-    private String name = null;
-    private String email = null;
-    private String password = null;
-    private String mUserID;
+//    private String name, email, password, mUserID = null;
     private static final String EMAIL_PATTERN = "^[a-zA-Z0-9#_~!$&'()*+,;=:.\"(),:;<>@\\[\\]\\\\]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*$";
     private Pattern pattern = Pattern.compile(EMAIL_PATTERN);
 
@@ -84,13 +82,13 @@ public class LoginWithEmailFragment extends Fragment implements View.OnClickList
     @OnClick(R.id.button_login_fragment_login_with_email)
     void signIn() {
         hideKeyboard();
-        email = mEditTextAddEmail.getText().toString().trim();
-        password = mEditTextAddPassword.getText().toString().trim();
-        Log.d(TAG, "signIn:" + email);
+        SplashLoginFragment.email = mEditTextAddEmail.getText().toString().trim();
+        SplashLoginFragment.password = mEditTextAddPassword.getText().toString().trim();
+        Log.d(TAG, "signIn:" + SplashLoginFragment.email);
         if (!validateForm()) {
             return;
         }
-        mAuth.signInWithEmailAndPassword(email, password)
+        mAuth.signInWithEmailAndPassword(SplashLoginFragment.email, SplashLoginFragment.password)
                 .addOnCompleteListener(Objects.requireNonNull(getActivity()), task -> {
                     if (task.isSuccessful()) {
                         mUser = mAuth.getCurrentUser();
@@ -98,10 +96,12 @@ public class LoginWithEmailFragment extends Fragment implements View.OnClickList
                         mDatabase.child(mUser.getUid()).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                name = (Objects.requireNonNull(dataSnapshot.child("Account")
+                                SplashLoginFragment.name = (Objects.requireNonNull(dataSnapshot.child("Account")
                                         .getValue(Account.class)).getName()); //set the name
-                                Toast.makeText(getContext(), "Welcome " + name,
-                                        Toast.LENGTH_LONG).show();
+                                if (SplashLoginFragment.name != null) {
+                                    Toast.makeText(getActivity(), "Welcome " + SplashLoginFragment.name,
+                                            Toast.LENGTH_SHORT).show();
+                                }
                                 Intent intent = new Intent(getContext(), TasksActivity.class);
                                 startActivity(intent);
                             }
@@ -126,14 +126,14 @@ public class LoginWithEmailFragment extends Fragment implements View.OnClickList
 
     private boolean validateForm() {
         boolean valid = true;
-        if (!validateEmail(email)) {
+        if (!validateEmail(SplashLoginFragment.email)) {
             mEditTextAddEmail.setError("Not a valid email address!");
             valid = false;
         } else {
             mEditTextAddEmail.setError(null);
         }
 
-        if (!validatePassword(password)) {
+        if (!validatePassword(SplashLoginFragment.password)) {
             mEditTextAddPassword.setError("Not a valid password!");
             valid = false;
         } else {

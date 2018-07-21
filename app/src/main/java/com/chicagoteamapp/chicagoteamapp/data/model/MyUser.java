@@ -26,7 +26,7 @@ public class MyUser implements Serializable {
     @NonNull
     private String mName;
 
-    public MyUser(@NonNull String mId, @NonNull String mName) {
+    public MyUser(@NonNull String mId, String mName) {
         this.mId = mId;
         this.mName = mName;
     }

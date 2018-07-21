@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.chicagoteamapp.chicagoteamapp.Account;
 import com.chicagoteamapp.chicagoteamapp.LaunchActivity;
 import com.chicagoteamapp.chicagoteamapp.R;
 import com.chicagoteamapp.chicagoteamapp.taskslist.TasksActivity;
@@ -31,6 +32,8 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.TwitterAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.DefaultLogger;
 import com.twitter.sdk.android.core.Result;
@@ -65,7 +68,7 @@ public class LoginOptionsFragment extends Fragment implements View.OnClickListen
     @BindView(R.id.twitterLogin) TwitterLoginButton mTwitterLoginButton;
     @BindView(R.id.button_create_an_account_fragment_login_options) Button mButtonCreateAnAccount;
 
-    public String id, name, email;
+    private DatabaseReference mDatabase;
     CallbackManager mCallbackManager;
 
     public LoginOptionsFragment() {
@@ -87,6 +90,7 @@ public class LoginOptionsFragment extends Fragment implements View.OnClickListen
         FirebaseApp.initializeApp(getContext());
         initializeFacebook();
         initializeTwitter();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
 //        initializeNewTwitter();
@@ -103,8 +107,14 @@ public class LoginOptionsFragment extends Fragment implements View.OnClickListen
                 handleFacebookAccessToken(loginResult.getAccessToken());
                 mAuth = FirebaseAuth.getInstance();
                 mUser = mAuth.getCurrentUser();
-                Toast.makeText(getActivity(), "Welcome " + mUser.getDisplayName(),
-                        Toast.LENGTH_SHORT).show();
+                assert mUser != null;
+                SplashLoginFragment.name = mUser.getDisplayName();
+                SplashLoginFragment.email = mUser.getEmail();
+                verifyUser(mUser);
+                if (SplashLoginFragment.name != null){
+                    Toast.makeText(getActivity(), "Welcome " + SplashLoginFragment.name,
+                            Toast.LENGTH_SHORT).show();
+                }
                 Intent intent = new Intent(getContext(), TasksActivity.class);
                 startActivity(intent);
             }
@@ -137,6 +147,18 @@ public class LoginOptionsFragment extends Fragment implements View.OnClickListen
                 });
     }
 
+    private void verifyUser(FirebaseUser mUser) {
+        if (mDatabase.child(mUser.getUid()) == null) {
+            writeNewUser(SplashLoginFragment.name, SplashLoginFragment.email);
+        }
+    }
+
+    private void writeNewUser(String name, String email) {
+        Account account = new Account(name, email);
+        String mUserID = mUser.getUid();
+        mDatabase.child(mUserID).child("Account").setValue(account);
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -163,6 +185,7 @@ public class LoginOptionsFragment extends Fragment implements View.OnClickListen
                     @Override
                     public void success(Result<TwitterSession> twitterSessionResult) {
 //                        mUser = mAuth.getCurrentUser();
+//                        name = mUser.getDisplayName();
 //                        Toast.makeText(getActivity(), "Welcome " + mUser.getDisplayName(),
 //                                Toast.LENGTH_SHORT).show();
                     }

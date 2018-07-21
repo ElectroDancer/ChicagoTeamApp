@@ -13,6 +13,7 @@ import com.chicagoteamapp.chicagoteamapp.MyApp;
 import com.chicagoteamapp.chicagoteamapp.R;
 import com.chicagoteamapp.chicagoteamapp.data.model.MyList;
 import com.chicagoteamapp.chicagoteamapp.data.room.TaskDao;
+import com.chicagoteamapp.chicagoteamapp.taskslist.TasksActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -62,7 +63,7 @@ class ListsListAdapter extends
         private View mView;
         private MyList mList;
 
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
             mView = view;
@@ -70,7 +71,7 @@ class ListsListAdapter extends
             mView.setOnLongClickListener(this);
         }
 
-        public void bindData(MyList list) {
+        void bindData(MyList list) {
             mList = list;
             mTextViewTitle.setText(mList.getTitle());
             mTextViewProgress.setText(parseListProgress(mList));
@@ -82,6 +83,7 @@ class ListsListAdapter extends
         }
 
         private String parseListProgress(MyList list) {
+            list.setUserId(TasksActivity.userId);
             TaskDao taskDao = MyApp.getInstance().getDatabase().taskDao();
             String of = mView.getContext().getString(R.string.msg_of);
             int count = taskDao.geTasksCount(list.getId());

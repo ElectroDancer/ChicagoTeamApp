@@ -10,10 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.chicagoteamapp.chicagoteamapp.MyApp;
 import com.chicagoteamapp.chicagoteamapp.R;
 import com.chicagoteamapp.chicagoteamapp.data.model.MyList;
+import com.chicagoteamapp.chicagoteamapp.taskslist.TasksActivity;
 import com.chicagoteamapp.chicagoteamapp.util.ViewUtil;
 import com.furianrt.bottompopupwindow.BottomPopupWindow;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,7 +32,7 @@ import static com.chicagoteamapp.chicagoteamapp.taskslist.popup.ListsListAdapter
 public class ListsFragment extends Fragment {
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
-    public String userId;
+    private String userId;
     public String userName;
 
     @BindView(R.id.button_add_list)
@@ -66,16 +68,15 @@ public class ListsFragment extends Fragment {
 
         ButterKnife.bind(this, view);
         mUser = FirebaseAuth.getInstance().getCurrentUser();
-        userId = Objects.requireNonNull(mUser).getUid();
-        userName = Objects.requireNonNull(mUser).getDisplayName();
+//        userId = Objects.requireNonNull(mUser).getUid();
+//        userName = Objects.requireNonNull(mUser).getDisplayName();
 
         mAdapter  = new ListsListAdapter(mListener);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
         MyApp.getInstance()
                 .getDatabase()
                 .listDao()
-                .getAllLists(userId)
+                .getAllLists(TasksActivity.userId)
                 .observe(this, lists -> mAdapter.submitList(lists));
 
         mRecyclerView.setAdapter(mAdapter);
@@ -88,6 +89,7 @@ public class ListsFragment extends Fragment {
         if (mEditTextNewList.getText().length() != 0){
             MyList list = new MyList(mEditTextNewList.getText().toString());
             mEditTextNewList.getText().clear();
+            list.setUserId(TasksActivity.userId);
             MyApp.getInstance()
                     .getDatabase()
                     .listDao()
